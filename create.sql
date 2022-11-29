@@ -2,7 +2,6 @@ create database if not exists restaurant collate utf8_unicode_ci;
 use restaurant;
 drop table if exists restaurant.user;
 drop table if exists restaurant.picture;
-drop trigger if exists tr_pic_insert;
 drop table if exists restaurant.order_log;
 drop table if exists restaurant.customer;
 drop table if exists restaurant.dining_table;
@@ -31,25 +30,6 @@ create table if not exists restaurant.picture
     url    varchar(256) not null
 );
 
-create trigger tr_pic_insert
-    before insert
-    on restaurant.picture
-    for each row
-begin
-    set @src_url = 'picture/download?path=';
-    set new.url = concat(@src_url, path);
-end;
-/*drop trigger if exists tr_pic_update;
-create trigger tr_pic_update
-    before update
-    on restaurant.picture
-    for each row
-begin
-    set @src_url = 'picture/download?path=';
-    set new.url = concat(@src_url, path);
-end;*/
-# 默认菜品图片https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg
-
 create table if not exists restaurant.dining_table
 (
     tid varchar(5) primary key,
@@ -71,7 +51,7 @@ create table if not exists restaurant.bill
     cost     double not null,
     received double not null,
     `change` double not null,
-    `time`   timestamp default current_timestamp
+    `time`   datetime default current_timestamp
 );
 
 create table if not exists restaurant.dish
@@ -91,7 +71,7 @@ create table if not exists restaurant.order_log
     did    int     not null,
     num    tinyint not null,
     tag    text,
-    `time` timestamp default current_timestamp,
+    `time` datetime default current_timestamp,
     primary key (id, cid)
 );
 drop function if exists calc_bill;
@@ -103,4 +83,36 @@ begin
     from (select did, num from restaurant.order_log where cid = customer_id) billing
              left join restaurant.dish on billing.did = restaurant.dish.did;
     return if(ISNULL(@ret), 0, @ret);
+end;
+/*图床触发器*/
+create trigger tr_pic_b_insert
+    before insert
+    on restaurant.picture
+    for each row
+begin
+    set @src_url = 'picture/download?path=';
+    set new.url = concat(@src_url, path);
+end;
+create trigger tr_pic_b_update
+    before update
+    on restaurant.picture
+    for each row
+begin
+    set @src_url = 'picture/download?path=';
+    set new.url = concat(@src_url, path);
+end;
+create trigger tr_pic_a_update
+    after update
+    on restaurant.picture
+    for each row
+begin
+    update restaurant.dish set url=new.url where url=old.url;
+end;
+create trigger tr_pic_a_delete
+    after delete
+    on restaurant.picture
+    for each row
+begin
+    set @init_url='https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg';
+    update restaurant.dish set url=@init_url where url=old.url;
 end;
