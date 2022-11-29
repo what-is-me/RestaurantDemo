@@ -8,6 +8,7 @@ drop table if exists restaurant.dining_table;
 drop table if exists restaurant.bill;
 drop table if exists restaurant.dish;
 drop table if exists restaurant.dish_type;
+#系统安全：用户
 create table if not exists restaurant.user
 (
     uid        varchar(20) primary key,
@@ -23,72 +24,67 @@ create table if not exists restaurant.user
  * 99:管理员 新建用户以及修改职位
  */
 );
-
+#图床
 create table if not exists restaurant.picture
 (
     `name` varchar(20) primary key,
     `path` varchar(256) not null,
     url    varchar(256) not null
 );
-
+#桌子表
 create table if not exists restaurant.dining_table
 (
-    tid varchar(5) primary key,
-    num tinyint not null check (num > 0 and num < 100),
+    tid varchar(5) primary key,#桌子编号
+    num tinyint not null check (num > 0 and num < 100),#桌子能坐多少人
     cid bigint  not null default -1
-    # -1表示空，否则返回在这张桌上吃饭的人的id
+    # -1表示空，否则就是在这张桌上吃饭的人的订单id
 );
-
+#define 顾客 订单
+#这张表是有必要存在的，否则不满足1nf
 create table if not exists restaurant.customer
 (
-    cid bigint primary key auto_increment,
-    tid varchar(5) not null,
+    cid bigint primary key auto_increment,#订单号
+    tid varchar(5) not null,#坐在哪桌
     foreign key (tid) references restaurant.dining_table (tid)
 );
-
+#账单
 create table if not exists restaurant.bill
 (
-    cid      bigint primary key,
-    cost     double not null,
-    received double not null,
-    `change` double not null,
-    `time`   datetime default current_timestamp
+    cid    bigint primary key,#订单号
+    cost   double not null,#成本
+    price  double not null,#应收
+    #received double not null,#实收
+    #`change` double not null,#找零
+    #感觉没啥必要，软件实现就行
+    `time` datetime default current_timestamp#时间戳，报表需要用到
 );
+#菜品种类
 create table if not exists restaurant.dish_type
 (
-    type          varchar(10) primary key,
-    `description` text
+    type          varchar(10) primary key,#种类名
+    `description` text#描述
 );
+#菜品
 create table if not exists restaurant.dish
 (
-    did        int primary key auto_increment,
-    `name`     varchar(50) not null,
-    type       varchar(10) not null,
-    `describe` text,
-    url        varchar(256),
-    cost       double      not null check (cost > 0),
-    price      double      not null check (price > 0),
+    did        int primary key auto_increment,#菜品id
+    `name`     varchar(50) not null,#名称
+    type       varchar(10) not null,#种类
+    `describe` text,#描述
+    url        varchar(256),#图片url
+    cost       double      not null check (cost > 0),#成本
+    price      double      not null check (price > 0),#价格
     foreign key (type) references restaurant.dish_type (type)
 );
+#点菜表
 create table if not exists restaurant.order_log
 (
-    cid    bigint  not null,
-    did    int     not null,
-    num    tinyint not null,
-    `time` datetime default current_timestamp,
+    cid    bigint  not null,#订单号
+    did    int     not null,#菜品id
+    num    tinyint not null,#点多少
+    `time` datetime default current_timestamp,#时间戳，菜品按销量排序用
     primary key (cid, did)
 );
-
-drop function if exists calc_bill;
-create function calc_bill(customer_id bigint) returns double
-    reads sql data
-begin
-    select sum(num * price)
-    into @ret
-    from (select did, num from restaurant.order_log where cid = customer_id) billing
-             left join restaurant.dish on billing.did = restaurant.dish.did;
-    return if(ISNULL(@ret), 0, @ret);
-end;
 /*图床触发器*/
 create trigger tr_pic_b_insert
     before insert
