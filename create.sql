@@ -8,6 +8,8 @@ drop table if exists restaurant.dining_table;
 drop table if exists restaurant.bill;
 drop table if exists restaurant.dish;
 drop table if exists restaurant.dish_type;
+drop view if exists full_order_log;
+drop view if exists temporary_bill;
 #系统安全：用户
 create table if not exists restaurant.user
 (
@@ -50,13 +52,13 @@ create table if not exists restaurant.customer
 #账单
 create table if not exists restaurant.bill
 (
-    cid    bigint primary key,#订单号
-    cost   double not null,#成本
-    price  double not null,#应收
-    #received double not null,#实收
+    cid      bigint primary key,#订单号
+    cost     double not null,#成本
+    price    double not null,#应收
+    received double not null,#实收,虽然感觉没啥用，但还是记着吧
     #`change` double not null,#找零
     #感觉没啥必要，软件实现就行
-    `time` datetime default current_timestamp#时间戳，报表需要用到
+    `time`   datetime default current_timestamp#时间戳，报表需要用到
 );
 #菜品种类
 create table if not exists restaurant.dish_type
@@ -85,6 +87,14 @@ create table if not exists restaurant.order_log
     `time` datetime default current_timestamp,#时间戳，菜品按销量排序用
     primary key (cid, did)
 );
+create view full_order_log as
+select cid, name, num, cost as unit_cost, price as unit_price, num * cost as cost, num * price as price
+from order_log
+         left join dish on dish.did = order_log.did;
+create view temporary_bill as
+select cid, sum(cost) as cost, sum(price) as price
+from full_order_log
+group by cid;
 /*图床触发器*/
 create trigger tr_pic_b_insert
     before insert

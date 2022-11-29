@@ -1,4 +1,6 @@
-# 工程简介
+# 运行流程
 
-# 延伸阅读
+* 运行create.sql
+* 运行testcases.sql
+* 观察你的表
 
