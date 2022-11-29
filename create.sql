@@ -7,6 +7,7 @@ drop table if exists restaurant.customer;
 drop table if exists restaurant.dining_table;
 drop table if exists restaurant.bill;
 drop table if exists restaurant.dish;
+drop table if exists restaurant.dish_type;
 create table if not exists restaurant.user
 (
     uid        varchar(20) primary key,
@@ -53,7 +54,11 @@ create table if not exists restaurant.bill
     `change` double not null,
     `time`   datetime default current_timestamp
 );
-
+create table if not exists restaurant.dish_type
+(
+    type          varchar(10) primary key,
+    `description` text
+);
 create table if not exists restaurant.dish
 (
     did        int primary key auto_increment,
@@ -62,7 +67,8 @@ create table if not exists restaurant.dish
     `describe` text,
     url        varchar(256),
     cost       double      not null check (cost > 0),
-    price      double      not null check (price > 0)
+    price      double      not null check (price > 0),
+    foreign key (type) references restaurant.dish_type (type)
 );
 create table if not exists restaurant.order_log
 (
@@ -74,6 +80,7 @@ create table if not exists restaurant.order_log
     `time` datetime default current_timestamp,
     primary key (id, cid)
 );
+
 drop function if exists calc_bill;
 create function calc_bill(customer_id bigint) returns double
     reads sql data
@@ -106,13 +113,13 @@ create trigger tr_pic_a_update
     on restaurant.picture
     for each row
 begin
-    update restaurant.dish set url=new.url where url=old.url;
+    update restaurant.dish set url=new.url where url = old.url;
 end;
 create trigger tr_pic_a_delete
     after delete
     on restaurant.picture
     for each row
 begin
-    set @init_url='https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg';
-    update restaurant.dish set url=@init_url where url=old.url;
+    set @init_url = 'https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg';
+    update restaurant.dish set url=@init_url where url = old.url;
 end;
