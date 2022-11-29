@@ -72,13 +72,11 @@ create table if not exists restaurant.dish
 );
 create table if not exists restaurant.order_log
 (
-    id     int     not null,
     cid    bigint  not null,
     did    int     not null,
     num    tinyint not null,
-    tag    text,
     `time` datetime default current_timestamp,
-    primary key (id, cid)
+    primary key (cid, did)
 );
 
 drop function if exists calc_bill;
