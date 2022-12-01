@@ -30,8 +30,8 @@ create table if not exists restaurant.user
 #图床
 create table if not exists restaurant.picture
 (
-    `name` varchar(20) primary key,
-    url    varchar(256) not null
+    `name` varchar(20) not null,
+    url    varchar(256) primary key
 );
 #桌子表
 create table if not exists restaurant.dining_table
@@ -66,9 +66,10 @@ create table if not exists restaurant.dish
     `name`     varchar(50) not null,#名称
     type       varchar(10) not null,#种类
     `describe` text,#描述
-    url        varchar(256) default 'https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg',#图片url
+    url        varchar(256),#图片url
     cost       double      not null check (cost > 0),#成本
-    price      double      not null check (price > 0)#价格
+    price      double      not null check (price > 0),#价格
+    foreign key (url) references restaurant.picture (url)#外键可以为空的来着
 );
 #菜品种类
 create view restaurant.dish_type
@@ -92,19 +93,3 @@ create view temporary_bill as
 select cid, sum(cost) as cost, sum(price) as price
 from full_order_log
 group by cid;
-/*图床触发器*/
-create trigger tr_pic_a_update
-    after update
-    on restaurant.picture
-    for each row
-begin
-    update restaurant.dish set url=new.url where url = old.url;
-end;
-create trigger tr_pic_a_delete
-    after delete
-    on restaurant.picture
-    for each row
-begin
-    set @init_url = 'https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg';
-    update restaurant.dish set url=@init_url where url = old.url;
-end;
