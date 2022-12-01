@@ -1,3 +1,4 @@
+drop database restaurant;
 create database if not exists restaurant collate utf8_unicode_ci;
 use restaurant;
 drop table if exists restaurant.user;
@@ -7,7 +8,7 @@ drop table if exists restaurant.customer;
 drop table if exists restaurant.dining_table;
 drop table if exists restaurant.bill;
 drop table if exists restaurant.dish;
-drop table if exists restaurant.dish_type;
+drop view if exists restaurant.dish_type;
 drop view if exists full_order_log;
 drop view if exists temporary_bill;
 #系统安全：用户
@@ -30,7 +31,6 @@ create table if not exists restaurant.user
 create table if not exists restaurant.picture
 (
     `name` varchar(20) primary key,
-    `path` varchar(256) not null,
     url    varchar(256) not null
 );
 #桌子表
@@ -42,7 +42,6 @@ create table if not exists restaurant.dining_table
     # -1表示空，否则就是在这张桌上吃饭的人的订单id
 );
 #define 顾客 订单
-#这张表是有必要存在的，否则不满足1nf
 create table if not exists restaurant.customer
 (
     cid bigint primary key auto_increment,#订单号
@@ -60,12 +59,6 @@ create table if not exists restaurant.bill
     #感觉没啥必要，软件实现就行
     `time`   datetime default current_timestamp#时间戳，报表需要用到
 );
-#菜品种类
-create table if not exists restaurant.dish_type
-(
-    type          varchar(10) primary key,#种类名
-    `description` text#描述
-);
 #菜品
 create table if not exists restaurant.dish
 (
@@ -73,11 +66,15 @@ create table if not exists restaurant.dish
     `name`     varchar(50) not null,#名称
     type       varchar(10) not null,#种类
     `describe` text,#描述
-    url        varchar(256),#图片url
+    url        varchar(256) default 'https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg',#图片url
     cost       double      not null check (cost > 0),#成本
-    price      double      not null check (price > 0),#价格
-    foreign key (type) references restaurant.dish_type (type)
+    price      double      not null check (price > 0)#价格
 );
+#菜品种类
+create view restaurant.dish_type
+as
+select restaurant.dish.type
+from restaurant.dish;
 #点菜表
 create table if not exists restaurant.order_log
 (
@@ -96,22 +93,6 @@ select cid, sum(cost) as cost, sum(price) as price
 from full_order_log
 group by cid;
 /*图床触发器*/
-create trigger tr_pic_b_insert
-    before insert
-    on restaurant.picture
-    for each row
-begin
-    set @src_url = 'picture/download?path=';
-    set new.url = concat(@src_url, path);
-end;
-create trigger tr_pic_b_update
-    before update
-    on restaurant.picture
-    for each row
-begin
-    set @src_url = 'picture/download?path=';
-    set new.url = concat(@src_url, path);
-end;
 create trigger tr_pic_a_update
     after update
     on restaurant.picture

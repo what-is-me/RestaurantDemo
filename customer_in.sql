@@ -13,7 +13,6 @@ begin
     else
         insert into restaurant.customer (tid) values (table_id);
         select max(cid) into @customer_id from restaurant.customer where tid = table_id;
-        delete from restaurant.customer where cid < @customer_id and tid = table_id;
         update restaurant.dining_table set cid=@customer_id where tid = table_id;
         commit;
     end if;
