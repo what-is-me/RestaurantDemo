@@ -74,7 +74,7 @@ create table if not exists restaurant.dish
 #菜品种类
 create view restaurant.dish_type
 as
-select restaurant.dish.type
+select distinct restaurant.dish.type
 from restaurant.dish;
 #点菜表
 create table if not exists restaurant.order_log
