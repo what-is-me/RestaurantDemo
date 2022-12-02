@@ -16,3 +16,16 @@ spring:
   mvc:
     converters:
       preferred-json-mapper: gson
+  mail:
+    default-encoding: UTF-8
+    host: smtp.yandex.com
+    password: xxx
+    port: 465
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+    protocol: smtp
+    test-connection: false
+    username: spm.usst@yandex.com
