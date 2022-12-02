@@ -17,4 +17,3 @@ begin
         commit;
     end if;
 end;
-call customer_in('A2')
