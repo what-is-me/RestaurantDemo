@@ -1,13 +1,15 @@
 package org.database.restaurant;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 
 import java.io.IOException;
 
+@EnableWebSecurity
 @SpringBootApplication
-@MapperScan("org.database.restaurant.mapper")
+@EnableOpenApi
 public class RestaurantApplication {
 
     public static void main(String[] args) throws IOException {

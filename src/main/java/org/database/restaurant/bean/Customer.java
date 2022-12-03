@@ -1,5 +1,6 @@
 package org.database.restaurant.bean;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
-    private long cid;
+    @ApiModelProperty("订单号")
+    private Long cid;
+    @ApiModelProperty("桌号")
     private String tid;
 }

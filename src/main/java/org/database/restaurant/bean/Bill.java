@@ -1,6 +1,7 @@
 package org.database.restaurant.bean;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +14,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Bill {
-    private long cid;
-    private double cost;
-    private double received;
-    private double change;
+    @ApiModelProperty("订单号")
+    private Long cid;
+    @ApiModelProperty("成本")
+    private Double cost;
+    @ApiModelProperty("应收")
+    private Double price;
+    @ApiModelProperty("实收")
+    private Double received;
+    @ApiModelProperty("付款时间")
     private Date time;
 }

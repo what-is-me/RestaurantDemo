@@ -8,23 +8,20 @@ drop table if exists restaurant.customer;
 drop table if exists restaurant.dining_table;
 drop table if exists restaurant.bill;
 drop table if exists restaurant.dish;
-drop view if exists restaurant.dish_type;
-drop view if exists full_order_log;
-drop view if exists temporary_bill;
 #系统安全：用户
 create table if not exists restaurant.user
 (
-    uid        varchar(20) primary key,
-    `password` varchar(30) not null,
-    type       tinyint     not null default 0
+    uid        bigint primary key auto_increment,
+    `name`     varchar(20)  not null,
+    `password` varchar(256) not null,
+    type       varchar(20)  not null default 'waiter' check (type in ('waiter', 'cashier', 'chef', 'senior', 'admin'))
 /**
  * 权限控制在后端实现
-  都可以修改自己密码
- * 0:服务员 查看菜单、剩余饭桌、点菜单；开台、点菜
- * 1:收银员 查看点菜单，写入账单，清台，新建删除修改餐桌
- * 2:后厨   修改菜单表，修改图片库
- * 3:主管   查看日、月、年流水、日、月、年菜品销量排序
- * 99:管理员 新建用户以及修改职位
+ * waiter:服务员 查看菜单、剩余饭桌、点菜单；开台、点菜
+ * cashier:收银员 查看点菜单，写入账单，清台，新建删除修改餐桌
+ * chef:后厨   修改菜单表，修改图片库
+ * senior:主管   查看日、月、年流水、日、月、年菜品销量排序
+ * admin:管理员 新建用户以及修改职位
  */
 );
 #图床
@@ -62,7 +59,7 @@ create table if not exists restaurant.bill
 #菜品
 create table if not exists restaurant.dish
 (
-    did        int primary key auto_increment,#菜品id
+    did        int primary key,#菜品id
     `name`     varchar(50) not null,#名称
     type       varchar(10) not null,#种类
     `describe` text,#描述
@@ -71,11 +68,6 @@ create table if not exists restaurant.dish
     price      double      not null check (price > 0),#价格
     foreign key (url) references restaurant.picture (url)#外键可以为空的来着
 );
-#菜品种类
-create view restaurant.dish_type
-as
-select distinct restaurant.dish.type
-from restaurant.dish;
 #点菜表
 create table if not exists restaurant.order_log
 (
@@ -85,6 +77,17 @@ create table if not exists restaurant.order_log
     `time` datetime default current_timestamp,#时间戳，菜品按销量排序用
     primary key (cid, did)
 );
+
+-- view --
+drop view if exists restaurant.dish_type;
+drop view if exists full_order_log;
+drop view if exists temporary_bill;
+drop view if exists ruser;
+#菜品种类
+create view restaurant.dish_type
+as
+select distinct restaurant.dish.type
+from restaurant.dish;
 create view full_order_log as
 select cid, name, num, cost as unit_cost, price as unit_price, num * cost as cost, num * price as price
 from order_log
@@ -93,3 +96,20 @@ create view temporary_bill as
 select cid, sum(cost) as cost, sum(price) as price
 from full_order_log
 group by cid;
+create view ruser as
+select concat(uid) as username, password, type
+from restaurant.user
+union
+select name as username, password, type
+from restaurant.user;
+-- trigger --
+#检查桌子在被删除时是否为空
+create trigger table_should_be_empty_before_delete
+    before delete
+    on restaurant.dining_table
+    for each row
+begin
+    if old.cid <> -1 then
+        signal sqlstate 'HY000' set message_text = '桌子不空，无法删除';
+    end if;
+end;

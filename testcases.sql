@@ -10,31 +10,6 @@ values ('B1', 2);
 insert into restaurant.dining_table(tid, num)
 values ('B2', 2);
 
-
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('主食', '米饭面食');
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('干锅铁板', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('水煮系列', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('浓汤系列', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('海鲜河类', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('甜点', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('田园时蔬', '当季时蔬，新鲜优质');
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('精美冷菜', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('酒水', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('锅仔系列', null);
-INSERT INTO restaurant.dish_type (type, description)
-VALUES ('风味小炒', null);
-
-
 INSERT INTO restaurant.dish (did, name, type, `describe`, url, cost, price)
 VALUES (1, '芹菜肉丝', '田园时蔬', null, null, 20, 32);
 INSERT INTO restaurant.dish (did, name, type, `describe`, url, cost, price)
@@ -61,3 +36,7 @@ INSERT INTO restaurant.order_log (cid, did, num, time)
 VALUES (2, 1, 1, '2022-11-29 23:49:37');
 INSERT INTO restaurant.order_log (cid, did, num, time)
 VALUES (2, 3, 3, '2022-11-29 23:49:37');
+insert into restaurant.user(name, password, type)
+VALUES ('admin', '$2a$10$L2KhDtFXm7xadRRgd5N53.3I.bwabdiZ4j.Obzb4nz33TVtqKGCP.', 'admin');# admin
+insert into restaurant.user(name, password, type)
+VALUES ('waiter', '$2a$10$OAfLTa3Y7YINNNRQtoubkuzS5oB/iJjxpIGJqtuNaNKO9PvSTMrz2', 'waiter');# password

@@ -2,8 +2,6 @@
 drop procedure if exists customer_in;
 create procedure customer_in(table_id varchar(5))
 begin
-    /*declare hasSqlError int default false;
-    declare continue handler for sqlexception set hasSqlError = true;*/
     start transaction;
 
     select cid into @init_cid from restaurant.dining_table where tid = table_id;
