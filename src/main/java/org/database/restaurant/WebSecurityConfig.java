@@ -35,8 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/files/*").permitAll()//设置匹配的资源放行
-                .and().formLogin();//剩余任何资源必须认证
+        //http.authorizeRequests().antMatchers("/files/*").permitAll()//设置匹配的资源放行
+        //        .and().formLogin();//剩余任何资源必须认证
+        super.configure(http);
         http.csrf().disable();
     }
 
