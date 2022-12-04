@@ -11,10 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import javax.sql.DataSource;
+import java.time.Duration;
+import java.util.Collections;
 
 @Configuration
 @Slf4j
@@ -41,11 +43,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests().antMatchers("/files/*").permitAll()//设置匹配的资源放行
         //        .and().formLogin();//剩余任何资源必须认证
         super.configure(http);
-        http.csrf().disable();
-        http.cors();
+        http.cors()
+                .configurationSource(corsConfigurationSource())
+                .and().csrf().disable();
     }
 
     @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setMaxAge(Duration.ofHours(1));
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+    /*@Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
@@ -57,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
-    }
+    }*/
 
 }
 

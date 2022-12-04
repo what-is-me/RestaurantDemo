@@ -1,0 +1,31 @@
+#title{
+    float:right;
+    width: 77%;
+    border: solid;
+    solid-color: #070707;
+    margin-right: 3%;
+    border-radius: 10px;
+    height: 7%;
+    text-align: left;
+}
+#struct{
+    width: 100%;
+    height: 900px;
+}
+#log_form{
+    border: solid;
+    height: 300px;
+    width: 500px;
+    margin-left: 450px;
+    margin-top: 200px;
+    position: fixed;
+    background-image: url("back.jpg");
+    opacity: 60%;
+}
+#hide_bg{
+    width: 100%;
+    height: 100%;
+    background-color: #a79e9e;
+    opacity:0.6;
+    position: fixed;
+}
