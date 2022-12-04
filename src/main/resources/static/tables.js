@@ -1,4 +1,3 @@
-
 /*var table = new Vue({
     el:'#tables',
     data:{
@@ -16,17 +15,17 @@
     }
 });*/
 var menus = new Vue({
-    el:"#menu",
-    data:{
-        menu:[]
+    el: "#menu",
+    data: {
+        menu: []
     },
     methods: {
-        get_menu:function (){
+        get_menu: function () {
             var that = this;
-            axios.get("http://localhost:8080/dish/").then(function (response){
+            axios.get("http://localhost:8080/dish/").then(function (response) {
                 console.log(response.data);
                 alert(response.body)
-            }).catch(function (error){
+            }).catch(function (error) {
                 console.log(error)
             })
         }

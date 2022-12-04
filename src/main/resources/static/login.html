@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:https="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link href="left_list.css" rel="stylesheet" type="text/css">
+    <link href="title_list.css" rel="stylesheet" type="text/css">
+    <link href="background.css" rel="stylesheet" type="text/css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <meta charset="UTF-8">
+    <title>点餐系统</title>
+    <script>
+        $(document).ready(function () {
+            $("#to_pay").click(function () {
+                var food = document.getElementById("food");
+                var num = food.getElementsByTagName("li").length;
+                var list = [];
+                var j = 0;
+                for (var i = 0; i < num; i++) {
+                    var aa = food.children.item(i).children.item(0).children.item(0).children.item(2).value;
+                    var pay_uu = document.getElementById("pay_main");
+                    if (aa !== "0") {
+                        list[j] = food.children.item(i)
+                        j = j + 1;
+                    }
+                }
+                for (var i = 0; i < list.length; i++) {
+                    pay_uu.append(list[i]);
+                }
+
+                var cold_menu = document.getElementById("cold_menu");
+                var num = cold_menu.getElementsByTagName("li").length;
+                var pay_cold = document.getElementById("pay_cold");
+                var list = [];
+                var j = 0;
+                for (var i = 0; i < num; i++) {
+                    var aa = cold_menu.children.item(i).children.item(0).children.item(0).children.item(2).value;
+                    if (aa !== "0") {
+                        list[j] = cold_menu.children.item(i)
+                        j = j + 1;
+                    }
+                }
+                for (var i = 0; i < list.length; i++) {
+                    pay_cold.append(list[i]);
+                }
+
+                var hot_menu = document.getElementById("hot_menu");
+                var num = hot_menu.getElementsByTagName("li").length;
+                var pay_hot = document.getElementById("pay_hot");
+                var list = [];
+                var j = 0;
+                for (var i = 0; i < num; i++) {
+                    var aa = hot_menu.children.item(i).children.item(0).children.item(0).children.item(2).value;
+                    if (aa !== "0") {
+                        list[j] = hot_menu.children.item(i)
+                        j = j + 1;
+                    }
+                }
+
+                for (var i = 0; i < list.length; i++) {
+                    pay_hot.append(list[i]);
+                }
+
+                var snack_menu = document.getElementById("snack_menu");
+                var num = snack_menu.getElementsByTagName("li").length;
+                var pay_snack = document.getElementById("pay_snack");
+                var list = [];
+                var j = 0;
+                for (var i = 0; i < num; i++) {
+                    var aa = snack_menu.children.item(i).children.item(0).children.item(0).children.item(2).value;
+                    if (aa !== "0") {
+                        list[j] = snack_menu.children.item(i)
+                        j = j + 1;
+                    }
+                }
+                for (var i = 0; i < list.length; i++) {
+                    pay_snack.append(list[i]);
+                }
+
+                var cook_menu = document.getElementById("cook_menu");
+                var num = cook_menu.getElementsByTagName("li").length;
+                var pay_cook = document.getElementById("pay_cook");
+                var list = [];
+                var j = 0;
+                for (var i = 0; i < num; i++) {
+                    var aa = cook_menu.children.item(i).children.item(0).children.item(0).children.item(2).value;
+                    if (aa !== "0") {
+                        list[j] = cook_menu.children.item(i)
+                        j = j + 1;
+                    }
+                }
+                for (var i = 0; i < list.length; i++) {
+                    pay_cook.append(list[i]);
+                }
+
+                var drink_menu = document.getElementById("drink_menu");
+                var num = drink_menu.getElementsByTagName("li").length;
+                var pay_drink = document.getElementById("pay_drink");
+                var list = [];
+                var j = 0;
+                for (var i = 0; i < num; i++) {
+                    var aa = drink_menu.children.item(i).children.item(0).children.item(0).children.item(2).value;
+                    if (aa !== "0") {
+                        list[j] = drink_menu.children.item(i)
+                        j = j + 1;
+                    }
+                }
+                for (var i = 0; i < list.length; i++) {
+                    pay_drink.append(list[i]);
+                }
+                /*这里是添加那个菜名到订单上*/
+                compute();
+                /*计算总金额*/
+
+            });
+
+            $(".check").click(function () {
+                var aa = document.getElementById("menu");
+
+                if (this.parentNode.parentNode !== aa) {
+                    compute();/*计算总金额*/
+                }
+                if (this.children.item(0).children.item(0).children.item(2).value === "0" && this.parentNode.parentNode !== aa) {/*去掉那些突然不想要的*/
+                    compute();/*计算总金额*/
+                    var ll = [];
+                    ll[0] = document.getElementById("food");
+                    ll[1] = document.getElementById("cold_menu");
+                    ll[2] = document.getElementById("hot_menu");
+                    ll[3] = document.getElementById("snack_menu");
+                    ll[4] = document.getElementById("cook_menu");
+                    ll[5] = document.getElementById("drink_menu");
+                    var nn = this.parentNode.id;
+                    if (nn === "pay_main") {
+                        ll[0].append(this);
+                    } else if (nn === "pay_cold") {
+                        ll[1].append(this);
+                    } else if (nn === "pay_hot") {
+                        ll[2].append(this);
+                    } else if (nn === "pay_snack") {
+                        ll[3].append(this);
+                    } else if (nn === "pay_cook") {
+                        ll[4].append(this);
+                    } else if (nn === "pay_drink") {
+                        ll[5].append(this);
+                    }
+                }
+            });
+
+        });
+
+    </script>
+</head>
+<body onload=login() style="text-align: center">
+<video autoplay loop muted src="background.mp4"></video>
+<div id="hide_bg"></div>
+
+
+<div id="struct">
+
+    <div style="float: left;width: 15%;border: solid;height: 100%;margin-top: 0px;margin-left: 3%;border-radius: 10px">
+        <ul style="margin-top: 10px;margin-bottom: 10px;">
+            <br>
+            <li class="left_menu">
+                <img src="user.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+                <a style="margin-bottom: 20px">欢迎您,</a>
+                <a>hhz</a>
+            </li>
+            <br>
+            <li class="left_menu" id="order_option" onclick="order_food_show()" style="background: #a79e9e">
+                <img src="shopping.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+                <a style="color: #070707;line-height: 60px;">我要点菜</a>
+            </li>
+            <br>
+            <li class="left_menu" id="pay_option" onclick="pay_food_show()">
+                <img src="order.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+                <a style="color: #070707;line-height: 60px">我的订单</a>
+            </li>
+            <br>
+            <li class="left_menu" id="swap_option" onclick="swap_show()">
+                <img src="swap.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+                <a style="color: #070707;line-height: 60px">用户切换</a>
+            </li>
+            <br>
+            <li class="left_menu" id="out_option" onclick="out_show()">
+                <img src="signout.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+                <a style="color: #070707;line-height: 60px">用户注销</a>
+            </li>
+            <br>
+
+        </ul>
+    </div>
+    <!--点餐系统-->
+    <div id="order_food"
+         style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0">
+        <img src="more.png" style="width: 20px;height: 20px;vertical-align: text-bottom;margin-top: 2%;margin-left: 1%">
+        <a>点餐系统</a>
+        <br>
+        <div style="border-radius: 10px;border: solid;background: antiquewhite;height: 40px;margin-left: 1%;margin-right: 0.7%;line-height: 40px">
+            <a style="margin-left: 6%">菜名</a>
+            <a style="margin-left: 37%">价格</a>
+            <a style="margin-left: 38%">选择</a>
+        </div>
+
+        <div id="menu"
+             style="width: 98%;border: solid;height: 88.3%;margin-right: 3%;border-radius: 10px;margin-top: 0;margin-left: 1%;opacity: 100%;background: white;overflow: scroll">
+            <input @click="get_menu" type="button" value="点击">
+            <!--
+             ！
+             ！-->
+            <!--添加菜品，从这里导入-->
+            <div>-------------------主食-------------------</div>
+            <ul id="food">
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">红烧肉</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>红烧肉（拼音： hóng shāo ròu、注音：ㄏㄨㄥˊ ㄕㄠ ㄖㄡˋ [3]
+                            ），一道著名的大众菜肴，各大菜系都有自己特色的红烧肉。其以五花肉为制作主料，也可用猪后腿代替 [4]
+                            ，最好选用肥瘦相间的三层肉来做，锅具以砂锅为主，做出来的肉肥瘦相间，香甜松软，营养丰富，入口即化。</p>
+                    </details>
+                </li>
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">粉蒸肉</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="粉蒸肉.jpg" style="width: 100px;height: 70px">
+                        <p>粉蒸肉 [1] ，亦称米粉肉 [6] ，发源于江西。诗人袁枚在《随园食单》中首次记载为一道江西菜品 [2]
+                            ，流行于中国南方（四川、江西、湖南、安徽、湖北、浙江、福建、广东梅州等地 [6-7]
+                            ），属赣菜系，糯而清香，酥而爽口，有肥有瘦，红白相间，嫩而不糜，米粉油润，香味浓郁。根据烹饪方法，可以偏辣，可以偏甜，配料可以辅以香菇、老藕、南瓜、红薯等蔬菜。</p>
+                    </details>
+                </li>
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">水蒸蛋</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="水蒸蛋.jpg" style="width: 100px;height: 70px">
+                        <p>
+                            水蒸蛋是传统美食之一，是一道老少皆宜的家常食谱，南方人称之为“水蒸蛋”，北方人则称为“鸡蛋羹”。山东人和东北人多称其为“蒸蛋糕儿”。虽然“蒸蛋”看起来简单，不过还是有很多人做得不成功，不是水量放太多，从而导致水与蛋分离；就是水蛋蒸得过老，蛋体呈蜂窝状。要成功蒸出好吃的水蛋，需要控制好水量、水温、打蛋技巧和火候。裹上保鲜膜可以防止蒸煮过程中水滴下破坏表面。</p>
+                    </details>
+                </li>
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">红烧肉</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>红烧肉（拼音： hóng shāo ròu、注音：ㄏㄨㄥˊ ㄕㄠ ㄖㄡˋ [3]
+                            ），一道著名的大众菜肴，各大菜系都有自己特色的红烧肉。其以五花肉为制作主料，也可用猪后腿代替 [4]
+                            ，最好选用肥瘦相间的三层肉来做，锅具以砂锅为主，做出来的肉肥瘦相间，香甜松软，营养丰富，入口即化。</p>
+                    </details>
+                </li>
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">红烧肉</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>红烧肉（拼音： hóng shāo ròu、注音：ㄏㄨㄥˊ ㄕㄠ ㄖㄡˋ [3]
+                            ），一道著名的大众菜肴，各大菜系都有自己特色的红烧肉。其以五花肉为制作主料，也可用猪后腿代替 [4]
+                            ，最好选用肥瘦相间的三层肉来做，锅具以砂锅为主，做出来的肉肥瘦相间，香甜松软，营养丰富，入口即化。</p>
+                    </details>
+                </li>
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">红烧肉</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>红烧肉（拼音： hóng shāo ròu、注音：ㄏㄨㄥˊ ㄕㄠ ㄖㄡˋ [3]
+                            ），一道著名的大众菜肴，各大菜系都有自己特色的红烧肉。其以五花肉为制作主料，也可用猪后腿代替 [4]
+                            ，最好选用肥瘦相间的三层肉来做，锅具以砂锅为主，做出来的肉肥瘦相间，香甜松软，营养丰富，入口即化。</p>
+                    </details>
+                </li>
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">水蒸蛋</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>
+                            水蒸蛋是传统美食之一，是一道老少皆宜的家常食谱，南方人称之为“水蒸蛋”，北方人则称为“鸡蛋羹”。山东人和东北人多称其为“蒸蛋糕儿”。虽然“蒸蛋”看起来简单，不过还是有很多人做得不成功，不是水量放太多，从而导致水与蛋分离；就是水蛋蒸得过老，蛋体呈蜂窝状。要成功蒸出好吃的水蛋，需要控制好水量、水温、打蛋技巧和火候。裹上保鲜膜可以防止蒸煮过程中水滴下破坏表面。</p>
+                    </details>
+                </li>
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">红烧肉</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>红烧肉（拼音： hóng shāo ròu、注音：ㄏㄨㄥˊ ㄕㄠ ㄖㄡˋ [3]
+                            ），一道著名的大众菜肴，各大菜系都有自己特色的红烧肉。其以五花肉为制作主料，也可用猪后腿代替 [4]
+                            ，最好选用肥瘦相间的三层肉来做，锅具以砂锅为主，做出来的肉肥瘦相间，香甜松软，营养丰富，入口即化。</p>
+                    </details>
+                </li>
+            </ul>
+            <!--添加菜品，从这里导入-->
+            <div>-------------------凉菜-------------------</div>
+            <ul id="cold_menu">
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">粉蒸肉</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="粉蒸肉.jpg" style="width: 100px;height: 70px">
+                        <p>粉蒸肉 [1] ，亦称米粉肉 [6] ，发源于江西。诗人袁枚在《随园食单》中首次记载为一道江西菜品 [2]
+                            ，流行于中国南方（四川、江西、湖南、安徽、湖北、浙江、福建、广东梅州等地 [6-7]
+                            ），属赣菜系，糯而清香，酥而爽口，有肥有瘦，红白相间，嫩而不糜，米粉油润，香味浓郁。根据烹饪方法，可以偏辣，可以偏甜，配料可以辅以香菇、老藕、南瓜、红薯等蔬菜。</p>
+                    </details>
+                </li>
+            </ul>
+            <div>-------------------热菜-------------------</div>
+            <ul id="hot_menu">
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">水蒸蛋</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>
+                            水蒸蛋是传统美食之一，是一道老少皆宜的家常食谱，南方人称之为“水蒸蛋”，北方人则称为“鸡蛋羹”。山东人和东北人多称其为“蒸蛋糕儿”。虽然“蒸蛋”看起来简单，不过还是有很多人做得不成功，不是水量放太多，从而导致水与蛋分离；就是水蛋蒸得过老，蛋体呈蜂窝状。要成功蒸出好吃的水蛋，需要控制好水量、水温、打蛋技巧和火候。裹上保鲜膜可以防止蒸煮过程中水滴下破坏表面。</p>
+                    </details>
+                </li>
+            </ul>
+            <div>-------------------小吃-------------------</div>
+            <ul id="snack_menu">
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">水蒸蛋</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>
+                            水蒸蛋是传统美食之一，是一道老少皆宜的家常食谱，南方人称之为“水蒸蛋”，北方人则称为“鸡蛋羹”。山东人和东北人多称其为“蒸蛋糕儿”。虽然“蒸蛋”看起来简单，不过还是有很多人做得不成功，不是水量放太多，从而导致水与蛋分离；就是水蛋蒸得过老，蛋体呈蜂窝状。要成功蒸出好吃的水蛋，需要控制好水量、水温、打蛋技巧和火候。裹上保鲜膜可以防止蒸煮过程中水滴下破坏表面。</p>
+                    </details>
+                </li>
+            </ul>
+            <div>-------------------蒸煮-------------------</div>
+            <ul id="cook_menu">
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">水蒸蛋</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>
+                            水蒸蛋是传统美食之一，是一道老少皆宜的家常食谱，南方人称之为“水蒸蛋”，北方人则称为“鸡蛋羹”。山东人和东北人多称其为“蒸蛋糕儿”。虽然“蒸蛋”看起来简单，不过还是有很多人做得不成功，不是水量放太多，从而导致水与蛋分离；就是水蛋蒸得过老，蛋体呈蜂窝状。要成功蒸出好吃的水蛋，需要控制好水量、水温、打蛋技巧和火候。裹上保鲜膜可以防止蒸煮过程中水滴下破坏表面。</p>
+                    </details>
+                </li>
+            </ul>
+            <div>-------------------酒水-------------------</div>
+            <ul id="drink_menu">
+                <li class="check"
+                    style="list-style: none;margin-top: 20px;border: solid;text-align: left;border-radius: 5px;margin-right: 2%">
+                    <details>
+                        <summary style="margin-left: 1%">
+                            <a style="margin-left: 2%">水蒸蛋</a>
+                            <a style="margin-left: 35%">25</a>
+                            <input min="0" style="margin-left: 36%;width: 50px;height: 20px" type="number" value="0">
+                        </summary>
+                        <img src="红烧肉.png" style="width: 100px;height: 70px">
+                        <p>
+                            水蒸蛋是传统美食之一，是一道老少皆宜的家常食谱，南方人称之为“水蒸蛋”，北方人则称为“鸡蛋羹”。山东人和东北人多称其为“蒸蛋糕儿”。虽然“蒸蛋”看起来简单，不过还是有很多人做得不成功，不是水量放太多，从而导致水与蛋分离；就是水蛋蒸得过老，蛋体呈蜂窝状。要成功蒸出好吃的水蛋，需要控制好水量、水温、打蛋技巧和火候。裹上保鲜膜可以防止蒸煮过程中水滴下破坏表面。</p>
+                    </details>
+                </li>
+            </ul>
+            <!--
+             ！
+             ！-->
+            <div style="text-align: right">
+                <button id="to_pay" style="margin-right: 10%;width: 10%;height: 50px;border-radius: 5px">前往结算
+                </button>
+            </div>
+        </div>
+    </div>
+    <!---->
+
+    <!--支付系统-->
+    <div id="pay_food"
+         style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0">
+        <img src="more.png" style="width: 20px;height: 20px;vertical-align: text-bottom;margin-top: 2%;margin-left: 1%">
+        <a>支付系统</a>
+        <br>
+        <div style="border-radius: 10px;border: solid;background: antiquewhite;height: max-content;margin-left: 1%;margin-right: 0.7%;line-height: 40px">
+            <table border="2" id="tables"
+                   style="display: block;position:relative;margin-top: 20px;margin-left: 10px;margin-right: 10px">
+                <thead style="float:left;">
+                <tr>
+                    <th>桌号</th>
+                    <th>人数</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>A1</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>A2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>B1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>B2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>B3</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>C1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>C2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>C3</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>C4</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>D1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>D2</td>
+                    <td>0</td>
+                </tr>
+
+                </tbody>
+            </table>
+            <form name="pay_for_money">
+                输入桌号：<input id="table_number" style="margin-left: 37%;height: 20px" type="number">
+            </form>
+        </div>
+        <div id="pay"
+             style="width: 98%;border: solid;height: 75.3%;margin-right: 3%;border-radius: 10px;margin-top: 0;margin-left: 1%;opacity: 100%;background: white;overflow: scroll">
+            <!--
+             ！
+             ！-->
+            <!--添加菜品，从这里导入-->
+            <div>-------------------主食-------------------</div>
+            <ul id="pay_main">
+
+                <!--<li >
+                    <a style="margin-left: 2%">测一测</a>
+                    <a style="margin-left: 40%">25</a>
+                    <input type="number" style="margin-left: 40%;width: 50px;height: 20px" value="0" min="0">
+                </li>-->
+            </ul>
+            <div>-------------------凉菜-------------------</div>
+            <ul id="pay_cold">
+            </ul>
+            <div>-------------------热菜-------------------</div>
+            <ul id="pay_hot">
+            </ul>
+            <div>-------------------小吃-------------------</div>
+            <ul id="pay_snack">
+            </ul>
+            <div>-------------------蒸煮-------------------</div>
+            <ul id="pay_cook">
+            </ul>
+            <div>-------------------酒水-------------------</div>
+            <ul id="pay_drink">
+            </ul>
+            <!--添加菜品，从这里导入-->
+            <!--
+             ！
+             ！-->
+            <div style="text-align: left">
+
+                <a style="margin-right: 10%;width: 10%;height: 50px;border-radius: 5px;margin-left: 10%">总计:</a>
+                <a id="total_money">100</a>
+                <a style="margin-right: 10%">元</a>
+                <button onclick="end_pay()"
+                        style="margin-left: 30%;margin-right: 10%;width: 10%;height: 50px;border-radius: 5px">生成收费码
+                </button>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center">
+        <div id="log_form">
+            <form action="http://localhost:8080" class="hide">
+                <h2 style="text-align: center">请登录</h2>
+                <div>
+                    <input placeholder="请输入用户名" style="width: 90%;border-radius: 4px;margin: 0 10px;height: 40px"
+                           type="text">
+                </div>
+                <br>
+                <div>
+                    <input placeholder="请输入密码" style="width: 90%;border-radius: 4px;margin: 0 10px;height: 40px"
+                           type="text">
+                </div>
+                <br>
+                <div>
+                    <input type="checkbox">保存密码
+                </div>
+                <br>
+            </form>
+            <div style="text-align: center">
+                <button id="log_in" onclick="service()"
+                        style="width: 70px;border-radius: 4px;margin: 0 10px;height: 40px">确定
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="order.js"></script>
+<script src="tables.js"></script>
+</body>
+</html>

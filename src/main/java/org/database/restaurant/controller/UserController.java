@@ -16,11 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 @Api(tags = "用户管理")
-@PreAuthorize("hasAuthority('admin')")
 public class UserController {
     @Autowired
     RUserMapper rUserMapper;
-
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ApiOperation("通过用户名或者uid查询，密码是加密的（不可逆）")
     @ApiImplicitParam(name = "username", value = "用户名或者uid<br>留空则查询所有")
@@ -30,6 +29,7 @@ public class UserController {
         else return rUserMapper.find(uid);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @ApiOperation("新用户")
     @RequestMapping(value = "/insert", method = {RequestMethod.GET, RequestMethod.POST})
     public Boolean insert(@RequestParam String name,
@@ -44,6 +44,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @ApiOperation("更新密码")
     @RequestMapping(value = "/update", method = {RequestMethod.GET, RequestMethod.POST})
     public Boolean updatePassword(@RequestParam String username, @RequestParam String password) {
@@ -56,6 +57,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @ApiOperation("删除用户")
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public Boolean delete(@RequestParam String username) {
