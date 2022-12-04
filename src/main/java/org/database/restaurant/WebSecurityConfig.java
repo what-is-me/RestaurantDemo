@@ -42,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //        .and().formLogin();//剩余任何资源必须认证
         super.configure(http);
         http.csrf().disable();
+        http.cors();
     }
 
     @Bean
