@@ -2,6 +2,7 @@ package org.database.restaurant.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.database.restaurant.bean.Dish;
 import org.database.restaurant.mapper.DishMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("dish")
 @Api(tags = "菜品管理")
+@Slf4j
 public class DishController {
     @Autowired
     DishMapper dishMapper;
@@ -52,6 +54,7 @@ public class DishController {
             dishMapper.insert(dish);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
@@ -64,6 +67,7 @@ public class DishController {
             dishMapper.delete(did);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }

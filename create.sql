@@ -113,3 +113,39 @@ begin
         signal sqlstate 'HY000' set message_text = '桌子不空，无法删除';
     end if;
 end;
+
+
+#开台
+use restaurant;
+drop function if exists customer_in;
+create function customer_in(table_id varchar(5)) returns bigint
+    reads sql data
+begin
+    select cid into @init_cid from restaurant.dining_table where tid = table_id;
+    if @init_cid <> -1 then
+        SIGNAL SQLSTATE 'HY000' SET MESSAGE_TEXT = '该桌有人占用';
+    else
+        insert into restaurant.customer (tid) values (table_id);
+        select max(cid) into @customer_id from restaurant.customer where tid = table_id;
+        update restaurant.dining_table set cid=@customer_id where tid = table_id;
+        return @customer_id;
+    end if;
+end;
+# 结账
+drop function if exists customer_out;
+create function customer_out(table_id varchar(5), receive double) returns boolean
+    reads sql data
+begin
+    select cid into @customer_id from restaurant.customer where tid = table_id;
+    if @customer_id = -1 then
+        SIGNAL SQLSTATE 'HY000' SET MESSAGE_TEXT = '该桌空';
+    else
+        select sum(cost), sum(price) into @cost, @price from restaurant.full_order_log where cid = @customer_id;
+        if isnull(@cost) then
+            return true;
+        end if;
+        insert into restaurant.bill(cid, cost, price, received) VALUES (@customer_id, @cost, @price, receive);
+        update restaurant.dining_table set cid= -1 where tid = table_id;
+    end if;
+    return true;
+end;

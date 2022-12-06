@@ -1,6 +1,5 @@
 package org.database.restaurant.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FullOrderLog {
-    @ApiModelProperty("菜品份数")
-    Long num;
+public class DishStatistics {
+    @ApiModelProperty("菜品编号")
+    private Long did;
     @ApiModelProperty("菜品名称")
     private String name;
-    @ApiModelProperty("单价")
-    private Double unitPrice;
-    @ApiModelProperty("总价")
-    private Double price;
-    @JsonIgnore
-    private Double cost;
+    @ApiModelProperty("点了多少")
+    private Integer num;
+    @ApiModelProperty("收益(价格 - 成本)")
+    private Double earn;
 }

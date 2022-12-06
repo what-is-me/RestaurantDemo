@@ -6,7 +6,7 @@ import org.database.restaurant.bean.DiningTable;
 import java.util.List;
 
 @Mapper
-public interface TableMapping {
+public interface TableMapper {
     @Select("select * from restaurant.dining_table;")
     List<DiningTable> listAll();
 
@@ -15,4 +15,10 @@ public interface TableMapping {
 
     @Delete("delete from restaurant.dining_table where tid='${tid}';")
     void delete(@Param("tid") String tableId);
+
+    @Select("select cid from restaurant.dining_table where tid='${tid}';")
+    List<Long> tToC(@Param("tid") String tid);
+
+    @Select("select tid from restaurant.customer where cid=${cid};")
+    List<String> cToT(@Param("cid") Long cid);
 }

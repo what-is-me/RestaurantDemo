@@ -3,6 +3,7 @@ package org.database.restaurant.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.database.restaurant.bean.RUser;
 import org.database.restaurant.mapper.RUserMapper;
 import org.database.restaurant.tools.PasswordEncoder;
@@ -16,9 +17,11 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 @Api(tags = "用户管理")
+@Slf4j
 public class UserController {
     @Autowired
     RUserMapper rUserMapper;
+
     @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ApiOperation("通过用户名或者uid查询，密码是加密的（不可逆）")
@@ -40,6 +43,7 @@ public class UserController {
             rUserMapper.insert(RUser.builder().name(name).password(password).type(type).build());
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
@@ -53,6 +57,7 @@ public class UserController {
             rUserMapper.updatePassword(username, password);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
@@ -65,10 +70,12 @@ public class UserController {
             rUserMapper.delete(username);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
 
+    @ApiOperation("调试用")
     @GetMapping("/getUsername")
     public Object getUsername() {
         return SecurityContextHolder.getContext().getAuthentication();

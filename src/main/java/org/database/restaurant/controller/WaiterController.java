@@ -52,6 +52,7 @@ public class WaiterController {
             return new ResultSet("点菜失败");
         }
         List<FullOrderLog> fols = billMapper.orderlist(cid);
+        //TODO:发送邮件
         /*new Thread(() -> {
             StringBuilder content = new StringBuilder();
             content.append("<html><body><table class='table table-hover'>");

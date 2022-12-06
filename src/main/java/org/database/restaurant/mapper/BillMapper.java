@@ -11,4 +11,7 @@ import java.util.List;
 public interface BillMapper {
     @Select("select * from restaurant.full_order_log where cid=${cid};")
     List<FullOrderLog> orderlist(@Param("cid") Long cid);
+
+    @Select("select restaurant.customer_out('${table_id}',${received});")
+    Boolean payBill(@Param("table_id") String tid, @Param("received") Double rec);
 }
