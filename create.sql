@@ -89,7 +89,7 @@ as
 select distinct restaurant.dish.type
 from restaurant.dish;
 create view full_order_log as
-select cid, name, num, cost as unit_cost, price as unit_price, num * cost as cost, num * price as price
+select cid, name, num, cost as unitCost, price as unitPrice, num * cost as cost, num * price as price
 from order_log
          left join dish on dish.did = order_log.did;
 create view temporary_bill as

@@ -23,19 +23,6 @@ VALUES (5, '毛血旺', '水煮系列', null, null, 40, 52);
 INSERT INTO restaurant.dish (did, name, type, `describe`, url, cost, price)
 VALUES (6, '米饭', '主食', null, null, 1, 5);
 
-
-INSERT INTO restaurant.order_log (cid, did, num, time)
-VALUES (1, 1, 2, '2022-11-29 23:49:37');
-INSERT INTO restaurant.order_log (cid, did, num, time)
-VALUES (1, 2, 1, '2022-11-29 23:49:37');
-INSERT INTO restaurant.order_log (cid, did, num, time)
-VALUES (1, 3, 1, '2022-11-29 23:49:37');
-INSERT INTO restaurant.order_log (cid, did, num, time)
-VALUES (1, 6, 3, '2022-11-29 23:49:37');
-INSERT INTO restaurant.order_log (cid, did, num, time)
-VALUES (2, 1, 1, '2022-11-29 23:49:37');
-INSERT INTO restaurant.order_log (cid, did, num, time)
-VALUES (2, 3, 3, '2022-11-29 23:49:37');
 insert into restaurant.user(name, password, type)
 VALUES ('admin', '$2a$10$L2KhDtFXm7xadRRgd5N53.3I.bwabdiZ4j.Obzb4nz33TVtqKGCP.', 'admin');# admin
 insert into restaurant.user(name, password, type)
