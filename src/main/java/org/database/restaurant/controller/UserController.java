@@ -75,9 +75,10 @@ public class UserController {
         }
     }
 
-    @ApiOperation("调试用")
+    @PreAuthorize("hasAnyAuthority('waiter','cashier','chef','senior','admin')")
+    @ApiOperation("用户权限")
     @GetMapping("/getUsername")
     public Object getUsername() {
-        return SecurityContextHolder.getContext().getAuthentication();
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 }
