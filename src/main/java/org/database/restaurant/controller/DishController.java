@@ -40,7 +40,7 @@ public class DishController {
     }
 
     @PreAuthorize("hasAnyAuthority('chef','admin')")
-    @PostMapping("/insert")
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ApiOperation("插入或者更新")
     public Boolean insert(@RequestParam Long did,
                           @RequestParam String name,
@@ -60,7 +60,7 @@ public class DishController {
     }
 
     @PreAuthorize("hasAnyAuthority('chef','admin')")
-    @PostMapping("/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ApiOperation("删除")
     public Boolean delete(@RequestParam Long did) {
         try {

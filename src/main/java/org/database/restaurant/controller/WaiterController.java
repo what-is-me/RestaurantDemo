@@ -34,7 +34,7 @@ public class WaiterController {
     String chefEmail;
 
     @ApiOperation("开台和点菜")
-    @PostMapping("/order")
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
     public ResultSet order(@RequestParam String table_id, @RequestBody List<Order> orders) {
         Long cid;
         try {
