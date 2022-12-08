@@ -1,0 +1,28 @@
+.check{
+    list-style: none;
+    margin-top: 20px;
+    border: solid;
+    text-align: left;
+    border-radius: 5px;
+    margin-right: 2%
+}
+.summary{
+    margin-left: 1%;
+}
+.names{
+    margin-left: 2%;
+}
+.price{
+    margin-left: 35%;
+}
+.count{
+    margin-left: 36%;
+    width: 50px;
+    height: 20px
+}
+.imgs{
+    width: 100px;
+    height: 70px
+}
+.describes{
+}

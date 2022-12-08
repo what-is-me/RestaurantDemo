@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:https="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link href="left_list.css" rel="stylesheet" type="text/css">
+  <link href="menu_list.css" rel="stylesheet" type="text/css">
+  <link href="title_list.css" rel="stylesheet" type="text/css">
+  <link href="background.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <meta charset="UTF-8">
+  <title>账号管理</title>
+  <script>
+  </script>
+
+</head>
+<body onload=login() style="text-align: center">
+<video autoplay loop muted src="background.mp4"></video>
+
+<div id="struct">
+
+  <div style="float: left;width: 15%;border: solid;height: 100%;margin-top: 0px;margin-left: 3%;border-radius: 10px">
+    <ul style="margin-top: 10px;margin-bottom: 10px;">
+      <br>
+      <li class="left_menu">
+        <img src="user.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="margin-bottom: 20px">欢迎您,</a>
+        <a>hhz</a>
+      </li>
+      <br>
+      <li class="left_menu" id="add_user_option" onclick="order_food_show()" style="background: #a79e9e">
+        <img src="modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="color: #070707;line-height: 60px;">添加用户</a>
+      </li>
+      <br>
+      <li class="left_menu" id="update_code_option" onclick="order_food_show()" style="background: #a79e9e">
+        <img src="modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="color: #070707;line-height: 60px;">修改密码</a>
+      </li>
+      <br>
+      <li class="left_menu" id="swap_option" onclick="swap_show()">
+        <img src="swap.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="color: #070707;line-height: 60px">用户切换</a>
+      </li>
+      <br>
+      <li class="left_menu" id="out_option" onclick="out_show()">
+        <img src="signout.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="color: #070707;line-height: 60px">用户注销</a>
+      </li>
+      <br>
+
+    </ul>
+  </div>
+  <div id="add_user"
+       style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0">
+    <br>
+  </div>
+</div>
+<script src="order.js"></script>
+<script src="tables.js"></script>
+</body>
+</html>
