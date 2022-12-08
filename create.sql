@@ -149,4 +149,3 @@ begin
     end if;
     return true;
 end;
-select restaurant.customer_out('A1', 0.0);
