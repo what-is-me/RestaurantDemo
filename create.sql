@@ -136,7 +136,7 @@ drop function if exists customer_out;
 create function customer_out(table_id varchar(5), receive double) returns boolean
     reads sql data
 begin
-    select cid into @customer_id from restaurant.customer where tid = table_id;
+    select cid into @customer_id from restaurant.dining_table where tid = table_id;
     if @customer_id = -1 then
         SIGNAL SQLSTATE 'HY000' SET MESSAGE_TEXT = '该桌空';
     else
@@ -149,3 +149,4 @@ begin
     end if;
     return true;
 end;
+select restaurant.customer_out('A1', 0.0);
