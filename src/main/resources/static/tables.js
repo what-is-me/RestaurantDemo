@@ -11,10 +11,15 @@ let table = new Vue({
             }).catch(function (error){
                 console.log(error)
             })
+            this.set_tables();
         },
         set_tables:function (){
             console.log(this.table_num[0])
             let table = document.getElementById("set_table")
+            table.innerHTML="<tr>\n" +
+                "            <td>桌号</td>\n" +
+                "            <td>人数</td>\n" +
+                "          </tr>";
             for(let i in this.table_num){
                 let tr = document.createElement("tr");
                 let td_id = document.createElement("td");
