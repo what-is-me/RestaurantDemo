@@ -1,5 +1,4 @@
 function login() {
-    document.getElementById("pay_food").style.display = "none"
 }
 
 function service() {
