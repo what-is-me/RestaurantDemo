@@ -30,7 +30,7 @@ public class ImageController {
     PictureMapper pictureMapper;
 
     @PreAuthorize("hasAnyAuthority('waiter','cashier','chef','senior','admin')")
-    @PostMapping("/upload")
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public Boolean upload(@RequestPart("files") MultipartFile[] files) {
         for (MultipartFile multipartFile : files) {
             String fileName = multipartFile.getOriginalFilename();  // 文件名
@@ -92,7 +92,7 @@ public class ImageController {
         return pictureMapper.listAll();
     }
 
-    @PostMapping("/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Boolean delete(@RequestParam String filename) {
         try {
             pictureMapper.delete(filename);
