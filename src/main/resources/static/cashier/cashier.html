@@ -31,7 +31,7 @@
       <br>
       <li class="left_menu" id="order_option" onclick="order_food_show()" style="background: #a79e9e">
         <img src="modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
-        <a style="color: #070707;line-height: 60px;">修改菜单</a>
+        <a style="color: #070707;line-height: 60px;">结账收银</a>
       </li>
       <br>
       <li class="left_menu" id="swap_option" onclick="swap_show()">
@@ -70,30 +70,13 @@
         </table>
       </div>
     </div>
-    <div id="update_state" style="width: 98%;border: solid;height: 63.3%;margin-right: 3%;border-radius: 10px;margin-top: 0;margin-left: 1%;opacity: 100%;background: white;overflow: scroll">
+    <div id="get_orders" style="width: 98%;border: solid;height: 63.3%;margin-right: 3%;border-radius: 10px;margin-top: 0;margin-left: 1%;opacity: 100%;background: white;overflow: scroll">
       <h1>结账：</h1>
-      <input type="button" value="点击刷新订单号" id="get_orders">
-      <div style="text-align: left">
-
-        <span>桌号：</span>
-        <span id="tid"></span>
-        <br>
-        <br>
-        <span>订单号：</span>
-        <span id="cid"></span>
-        <br>
-        <br>
-        <span>实际付款：</span>
-        <input id="money" type="text">
-        <br>
-        <br>
-        <span>找零：</span>
-        <span id="change"></span>
-        <br>
-        <br>
-        <input type="button" value="生成订单" id="post_deal">
+      <input type="button" value="点击刷新订单号" id="get_orders_button" @click="getTables">
+      <div style="text-align: left;margin-left: 40px">
+        <div id="set_orders">
+        </div>
       </div>
-
 
     </div>
   </div>

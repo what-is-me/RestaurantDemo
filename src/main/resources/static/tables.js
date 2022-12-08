@@ -53,10 +53,11 @@ let menus = new Vue({
                 console.log(error)
             })
             let m= document.getElementById("menu");
-
+            this.menu_list();
         },
         menu_list:function (){
             let food = document.getElementById("food")
+            food.innerHTML=""
             let pay_main = document.getElementById("pay_main")
             for(let ss in this.menu){
                 let u = document.createElement("ul")

@@ -65,20 +65,3 @@ let deal = new Vue({
         }
     }
 })
-let get_orders = new Vue({
-    el:"#get_orders",
-    data:{
-
-    },
-    methods:{
-        getOrder:function (){
-            /*这里的url需要改*/
-            axios.get("http://localhost:8080/bill/pay").then(function (resp){
-                console.log(resp.data);
-                /*把这一部分写道html页面上*/
-            }).catch(function (error){
-                alert("网络异常！")
-            })
-        }
-    }
-})
