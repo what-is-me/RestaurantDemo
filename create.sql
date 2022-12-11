@@ -24,6 +24,9 @@ create table if not exists restaurant.user
  * admin:管理员 新建用户以及修改职位
  */
 );
+alter table user
+    add constraint user_pk
+        unique (name);
 #图床
 create table if not exists restaurant.picture
 (
