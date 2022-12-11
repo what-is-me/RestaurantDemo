@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:https="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://d3js.org/d3.v7.js"></script>
+  <link href="left_list.css" rel="stylesheet" type="text/css">
+  <link href="menu_list.css" rel="stylesheet" type="text/css">
+  <link href="title_list.css" rel="stylesheet" type="text/css">
+  <link href="background.css" rel="stylesheet" type="text/css">
+  <link href="radio.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <meta charset="UTF-8">
+  <title>账号管理</title>
+  <script>
+  </script>
+</head>
+<body onload=login() style="text-align: center">
+
+<video autoplay loop muted src="../background.mp4"></video>
+
+<div id="struct">
+
+  <div style="float: left;width: 15%;border: solid;height: 100%;margin-top: 0px;margin-left: 3%;border-radius: 10px">
+    <ul style="margin-top: 10px;margin-bottom: 10px;">
+      <br>
+      <li class="left_menu">
+        <img src="../user.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="margin-bottom: 20px">欢迎您,</a>
+        <a>hhz</a>
+      </li>
+      <br>
+      <li class="left_menu" id="bill_option" onclick="add_show()" style="background: #a79e9e">
+        <img src="../modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="color: #070707;line-height: 60px;">流水查看</a>
+      </li>
+      <br>
+      <li class="left_menu" id="dish_option" onclick="modify_show()" style="background: #ffffff">
+        <img src="../modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="color: #070707;line-height: 60px;">菜品销量</a>
+      </li>
+      <br>
+      <li class="left_menu" id="out_option" onclick="out_show()">
+        <img src="../signout.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <a style="color: #070707;line-height: 60px">用户注销</a>
+      </li>
+      <br>
+
+    </ul>
+  </div>
+  <div id="bill_list" style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0;text-align: center">
+    <div class="base-info-item family-info-item">
+      <label for="day" style="margin-top: 0.5%;margin-left: 40%" >
+        <input name="familyIllness" id="day" type="radio" value="1" checked="checked">
+        <span>日</span>
+      </label>
+      <label for="month" style="margin-top: 0.5%">
+        <input name="familyIllness" id="month" type="radio" value="2">
+        <span>月</span>
+      </label>
+      <label for="year" style="margin-top: 0.5%">
+        <input name="familyIllness" id="year" type="radio" value="3">
+        <span>年</span>
+      </label>
+    </div>
+    <div id="bill" style="width: 80%;border: solid;margin-left: 10%;background: white;border-radius: 10px;height: 70%;overflow: scroll">
+      <div STYLE="margin-top: 20px">
+        <span>订单号：</span>
+        <a id="cid">xxxxxxxx</a>
+        <span>|成本：</span>
+        <a id="cost">xxxxxxx </a>
+        <span>|售价：</span>
+        <a id="price"> xxxxxx</a>
+        <span>|实付款：</span>
+        <a id="received">    xxxxxxx  </a>
+        <span>|找零：</span>
+        <a id="change"> xx  </a>
+        <span>|时间：</span>
+        <a id="time">xxxxxxxx</a>
+      </div>
+    </div>
+    <div id="statics" style="width: 80%;border: solid;margin-left: 10%;background: white;border-radius: 10px;height: 15%;margin-top: 20px">
+      <!--<svg></svg>--><!--这里可以显示折线图-->
+      <div style="margin-top: 30px">
+        <span style="font-size: 40px;">总利润为：{{profit}}元</span>
+        <span style="font-size: 40px;">|总成本为：{{costs}}元</span>
+      </div>
+    </div>
+  </div>
+  <div id="dish_list" style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0;text-align: center;display: none">
+    <div class="base-info-item family-info-item" >
+      <label for="day1" style="margin-top: 0.5%;margin-left: 40%" >
+        <input name="familyIllness" id="day1" type="radio" value="1" checked="checked">
+        <span>日</span>
+      </label>
+      <label for="month1" style="margin-top: 0.5%">
+        <input name="familyIllness" id="month1" type="radio" value="2">
+        <span>月</span>
+      </label>
+      <label for="year1" style="margin-top: 0.5%">
+        <input name="familyIllness" id="year1" type="radio" value="3">
+        <span>年</span>
+      </label>
+    </div>
+    <div id="dish" style="width: 80%;border: solid;margin-left: 10%;background: white;border-radius: 10px;height: 70%;overflow: scroll">
+      <div STYLE="margin-top: 20px">
+        <span>菜品单号：</span>
+        <a id="did">xxxxxxxx</a>
+        <span>|菜名：</span>
+        <a id="name">xxxxxxx </a>
+        <span>|卖出份数：</span>
+        <a id="count"> xxxxxx</a>
+        <span>|净赚：</span>
+        <a id="earn">    xxxxxxx  </a>
+      </div>
+    </div>
+    <div id="dish_total" style="width: 80%;border: solid;margin-left: 10%;background: white;border-radius: 10px;height: 15%;margin-top: 20px">
+      <!--<svg></svg>--><!--这里可以显示折线图-->
+      <div style="margin-top: 30px">
+        <span style="font-size: 40px;">总利润为：{{profit}}元</span>
+        <span style="font-size: 40px;">|总份数为：{{count}}份</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="manager_order.js"></script>
+<script src="statics_bill.js"></script>
+<script src="manager_tables.js"></script>
+</body>
+</html>

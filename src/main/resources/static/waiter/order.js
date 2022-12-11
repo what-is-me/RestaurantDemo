@@ -16,8 +16,6 @@ function order_food_show() {
     pay_option.style.background = "#ffffff";
     let out = document.getElementById("out_option");
     out.style.background = "#ffffff";
-    let swap = document.getElementById("swap_option");
-    swap.style.background = "#ffffff";
 
     let order_food = document.getElementById("order_food");
     let pay_food = document.getElementById("pay_food");
@@ -32,8 +30,6 @@ function pay_food_show() {
     pay_option.style.background = "#a79e9e";
     let out = document.getElementById("out_option");
     out.style.background = "#ffffff";
-    let swap = document.getElementById("swap_option");
-    swap.style.background = "#ffffff";
 
     let order_food = document.getElementById("order_food");
     let pay_food = document.getElementById("pay_food");
@@ -41,18 +37,6 @@ function pay_food_show() {
     pay_food.style.display = "";
 
 }
-
-function swap_show() {
-    let order = document.getElementById("order_option");
-    order.style.background = "#ffffff";
-    let pay_option = document.getElementById("pay_option");
-    pay_option.style.background = "#ffffff";
-    let out = document.getElementById("out_option");
-    out.style.background = "#ffffff";
-    let swap = document.getElementById("swap_option");
-    swap.style.background = "#a79e9e";
-}
-
 function out_show() {
     let order = document.getElementById("order_option");
     order.style.background = "#ffffff";
@@ -60,9 +44,7 @@ function out_show() {
     pay_option.style.background = "#ffffff";
     let out = document.getElementById("out_option");
     out.style.background = "#a79e9e";
-    let swap = document.getElementById("swap_option");
-    swap.style.background = "#ffffff";
-    location.href = "login.html";
+    location.href = "waiter.html";
 }
 
 

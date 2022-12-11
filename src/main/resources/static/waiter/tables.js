@@ -4,9 +4,9 @@ let table = new Vue({
         table_num:[]
     },
     methods:{
-        get_tables:function (){
+        async get_tables(){
             let that = this;
-            axios.get('http://localhost:8080/table/').then(function (response){
+            await axios.get('http://localhost:8080/table/').then(function (response){
                 that.table_num=response.data;
             }).catch(function (error){
                 console.log(error)
@@ -42,9 +42,9 @@ let menus = new Vue({
         menu: []
     },
     methods: {
-        get_menu: function () {
+        async get_menu() {
             var that = this;
-            axios.get("http://localhost:8080/dish/").then(function (response) {
+            await axios.get("http://localhost:8080/dish/").then(function (response) {
                 let obj = eval(response.data)
                 console.log(response.data);
                 console.log(obj.风味小炒[0]);

@@ -61,7 +61,7 @@ function out_show() {
     out.style.background = "#a79e9e";
     let swap = document.getElementById("swap_option");
     swap.style.background = "#ffffff";
-    location.href = "login.html";
+    location.href = "waiter.html";
 }
 
 

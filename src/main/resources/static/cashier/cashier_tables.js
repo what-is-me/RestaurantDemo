@@ -40,6 +40,7 @@ let table = new Vue({
         clearTable:function (e){
             let pay_money = e.currentTarget.parentNode.children.item(8);
             let should_pay = e.currentTarget.parentNode.children.item(6);
+            let change = parseFloat(pay_money.value)-parseFloat(should_pay.innerHTML)
             if(pay_money.value===""){
                 alert("还没有输入实际付款！")
             }
@@ -48,7 +49,7 @@ let table = new Vue({
             }
             else{
                 let tableClear = e.currentTarget.parentNode.children.item(2);
-                this.pay(e.currentTarget.parentNode.children.item(4).textContent,pay_money.value,tableClear.textContent)
+                this.pay(e.currentTarget.parentNode.children.item(4).textContent,pay_money.value,tableClear.textContent,change)
                 let tables = document.getElementById("set_table")
                 let child = tables.firstChild;
                 let last = tables.lastChild;
@@ -69,7 +70,7 @@ let table = new Vue({
                 }
             }
         },
-        async pay(cid,received,tid){
+        async pay(cid,received,tid,change){
             let that = this;
             await axios({
                 method: 'get',
@@ -78,7 +79,7 @@ let table = new Vue({
                     'Content-Type':'application/json;charset=utf-8'
                 }
             }).then(function (resp){
-
+                alert("找零："+change)
             })
             await this.get_tables().then();
             get_orders.getTables().then();

@@ -1,0 +1,33 @@
+.family-info-item {
+    display: flex;
+    text-align: center;
+    margin-top: 5%;
+    background: #dddddd;
+    margin-left: 10%;
+    height: 39px;
+    width: 80%;
+    border: solid;
+    border-radius: 10px;
+}
+
+.family-info-item input {
+    display: none;
+}
+
+.family-info-item input + span {
+    display: inline-block;
+    width: 40px;
+    line-height: 26px;
+    border-radius: 4px;
+    background-color: #dddddd22;
+    text-align: center;
+    margin-right: 5px;
+    font-size: 14px;
+    border: 1px solid #070707;
+}
+
+.family-info-item input:checked + span {
+    color: #1aa1e4;
+    border: 1px solid #1aa1e4;
+    background-color: #1aa1e411;
+}

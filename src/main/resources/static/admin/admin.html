@@ -13,10 +13,9 @@
   <title>账号管理</title>
   <script>
   </script>
-
 </head>
 <body onload=login() style="text-align: center">
-<video autoplay loop muted src="background.mp4"></video>
+<video autoplay loop muted src="../background.mp4"></video>
 
 <div id="struct">
 
@@ -24,28 +23,23 @@
     <ul style="margin-top: 10px;margin-bottom: 10px;">
       <br>
       <li class="left_menu">
-        <img src="user.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <img src="../user.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
         <a style="margin-bottom: 20px">欢迎您,</a>
         <a>hhz</a>
       </li>
       <br>
-      <li class="left_menu" id="add_user_option" onclick="order_food_show()" style="background: #a79e9e">
-        <img src="modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+      <li class="left_menu" id="add_user_option" onclick="add_show()" style="background: #a79e9e">
+        <img src="../modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
         <a style="color: #070707;line-height: 60px;">添加用户</a>
       </li>
       <br>
-      <li class="left_menu" id="update_code_option" onclick="order_food_show()" style="background: #a79e9e">
-        <img src="modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+      <li class="left_menu" id="update_code_option" onclick="modify_show()" style="background: #ffffff">
+        <img src="../modify.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
         <a style="color: #070707;line-height: 60px;">修改密码</a>
       </li>
       <br>
-      <li class="left_menu" id="swap_option" onclick="swap_show()">
-        <img src="swap.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
-        <a style="color: #070707;line-height: 60px">用户切换</a>
-      </li>
-      <br>
       <li class="left_menu" id="out_option" onclick="out_show()">
-        <img src="signout.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
+        <img src="../signout.png" style="width: 20px;height: 20px;vertical-align: text-top;margin-left: 10px">
         <a style="color: #070707;line-height: 60px">用户注销</a>
       </li>
       <br>
@@ -53,11 +47,67 @@
     </ul>
   </div>
   <div id="add_user"
-       style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0">
+       style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0;text-align: center">
     <br>
+    <div style="margin-top: 20%;background: white;width: 60%;margin-left: 20%;height: 40%;text-align: center;border: solid;border-radius: 10px">
+      <br>
+      <br>
+      <span>输入用户账号：</span>
+      <input type="text" id="account">
+      <br>
+      <br>
+      <span>设置职位：</span>
+      <br>
+      <span>服务员:</span>
+      <input type="radio" name="prof" checked="checked" value="服务员">
+      <br>
+      <span>收银员:</span>
+      <input type="radio" name="prof" value="收银员">
+      <br>
+      <span>主管:</span>
+      <input type="radio" name="prof" value="主管">
+      <br>
+      <br>
+      <span>设置密码：</span>
+      <input type="password" id="code1">
+      <br>
+      <br>
+      <span>确认密码：</span>
+      <input type="password" id="code2">
+      <br>
+      <br>
+      <span style="color: #ff4400;display: none" id="diff">两次密码不一致，重新输入</span>
+      <span style="color: #ff4400;display: none" id="diff1">用户名不合法，重新输入</span>
+      <br>
+      <br>
+      <input type="submit" value="确定" @click="submit()">
+    </div>
+  </div>
+  <div id="modify_user" style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0;text-align: center;display: none">
+    <br>
+    <div style="margin-top: 20%;background: white;width: 60%;margin-left: 20%;height: 40%;text-align: center;border: solid;border-radius: 10px">
+      <br>
+      <br>
+      <span>用户名或内部id：</span>
+      <input type="text" id="account_modify">
+      <br>
+      <br>
+      <span>重置密码：</span>
+      <input type="password" id="code_modify">
+      <br>
+      <br>
+      <span>确认密码：</span>
+      <input type="password" id="code_modify1">
+      <br>
+      <br>
+      <span style="color: #ff4400;" id="diff_modify">{{message}}</span>
+      <br>
+      <br>
+      <input type="submit" value="确定" @click="modifyUser">
+    </div>
   </div>
 </div>
-<script src="order.js"></script>
-<script src="tables.js"></script>
+<script src="admin_order.js"></script>
+<script src="admin_tables.js"></script>
 </body>
 </html>
