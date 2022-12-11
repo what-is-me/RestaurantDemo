@@ -6,17 +6,19 @@ let table = new Vue({
         pay_money:''
     },
     methods:{
-        get_tables:function (){
+        async get_tables(){
             let that = this;
-            axios.get('http://localhost:8080/table/').then(function (response){
+            await axios.get('http://localhost:8080/table/').then(function (response){
                 that.table_num=response.data;
+
             }).catch(function (error){
                 console.log(error)
             })
+            console.log("查看餐桌是否改变：")
+            console.log(this.table_num)
             this.set_tables();
         },
         set_tables:function (){
-            console.log(this.table_num[0])
             let table = document.getElementById("set_table")
             table.innerHTML="<tr>\n" +
                 "            <td>桌号</td>\n" +
@@ -67,19 +69,19 @@ let table = new Vue({
                 }
             }
         },
-        pay:function (cid,received,tid){
-            console.log(cid)
-            console.log(received)
-            console.log(tid)
-            axios({
+        async pay(cid,received,tid){
+            let that = this;
+            await axios({
                 method: 'get',
                 url:"http://localhost:8080/bill/pay?cid="+cid+"&received="+received+"&tid="+tid,
                 headers:{
                     'Content-Type':'application/json;charset=utf-8'
                 }
             }).then(function (resp){
-                console.log(resp.data)
+
             })
+            await this.get_tables().then();
+            get_orders.getTables().then();
         }
     }
 });
@@ -122,11 +124,14 @@ let get_orders = new Vue({
     methods:{
         async getTables(){
             table.get_tables();
-          this.table_num = table.table_num;
-          this.orders=[]
+            console.log("订单函数中桌子状态：")
+            console.log(table.table_num)
+            this.table_num = table.table_num;
+
+            this.orders=[]
           for(let i in this.table_num){
-              if(this.table_num[i].cid!==-1){
-                  let price = "";
+              if(this.table_num[i].cid!==-1){/*说明该桌有订单*/
+                  let price = "";/*总金额*/
                   let that = this;
                   let url = "http://localhost:8080/bill/receipt?cid="+this.table_num[i].cid+"&tid="+this.table_num[i].tid;
                   await axios.get(url).then(function (resp){
@@ -137,12 +142,15 @@ let get_orders = new Vue({
                       that.price = sum;
                       price = sum ;
                       /*把这一部分写道html页面上*/
+                      console.log("现在返回：")
+                      console.log(resp.data)
                   }).catch(function (error){
                       alert("出现异常!")
                       console.log(error)
                   })
+                  console.log("总价是：")
                   console.log(price)
-                  if(this.price!==false){
+                  if(price!==false){
                       let a = this.table_num[i];
                       a['price'] = this.price;
                       console.log(a)
@@ -150,11 +158,12 @@ let get_orders = new Vue({
                   }
               }
           }
+
             this.setOrder();
         },
         setOrder:function (){
             let set_orders = document.getElementById("set_orders");
-            set_orders.innerHTML="";
+            set_orders.innerText=""
             console.log(this.orders)
             for(let i in this.orders){
                 let set_order = document.createElement("div")

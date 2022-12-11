@@ -4,9 +4,9 @@ let table = new Vue({
         table_num:[]
     },
     methods:{
-        get_tables:function (){
+        async get_tables(){
             let that = this;
-            axios.get('http://localhost:8080/table/').then(function (response){
+            await axios.get('http://localhost:8080/table/').then(function (response){
                 that.table_num=response.data;
             }).catch(function (error){
                 console.log(error)
