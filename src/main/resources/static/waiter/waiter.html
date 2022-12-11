@@ -95,6 +95,7 @@
                     <tr>
                         <td>桌号</td>
                         <td>人数</td>
+                        <td>订单</td>
                     </tr>
 
                     </tbody>
@@ -102,12 +103,10 @@
             </div>
             <div>
                 <input @keyup.enter="select_table" id="table_id" style="height: 20px" type="text" placeholder="输入桌号" >
-                <input @keyup.enter="select_table" id="table_count" style="height: 20px" type="text" placeholder="输入人数">
-                <input @click="select_table" id="number" style="margin-left: 37%;height: 20px" type="button" value="确定">
             </div>
         </div>
         <div id="pay"
-             style="width: 98%;border: solid;height: 75.3%;margin-right: 3%;border-radius: 10px;margin-top: 0;margin-left: 1%;opacity: 100%;background: white;overflow: scroll">
+             style="width: 98%;border: solid;height: 65.3%;margin-right: 3%;border-radius: 10px;margin-top: 0;margin-left: 1%;opacity: 100%;background: white;overflow: scroll">
             <!--添加菜品，从这里导入-->
             <div id="pay_main">
             </div>
@@ -117,7 +116,7 @@
                 <a style="margin-right: 10%;width: 10%;height: 50px;border-radius: 5px;margin-left: 10%">总计:</a>
                 <a id="total_money">0</a>
                 <a style="margin-right: 10%">元</a>
-                <button onclick="end_pay()" id="generate"
+                <button @click="end_pay()" id="generate"
                         style="margin-left: 30%;margin-right: 10%;width: 10%;height: 50px;border-radius: 5px">生成收费码
                 </button>
             </div>

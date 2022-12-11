@@ -17,19 +17,22 @@ let table = new Vue({
             console.log(this.table_num[0])
             let table = document.getElementById("set_table")
             table.innerHTML="<tr>\n" +
-                "            <td>桌号</td>\n" +
-                "            <td>人数</td>\n" +
-                "          </tr>";
+                "                        <td>桌号</td>\n" +
+                "                        <td>人数</td>\n" +
+                "                        <td>订单</td>\n" +
+                "                    </tr>";
             for(let i in this.table_num){
                 let tr = document.createElement("tr");
                 let td_id = document.createElement("td");
                 let td_num = document.createElement("td");
-
+                let td_cid = document.createElement("td");
                 td_id.innerText = this.table_num[i].tid;
                 td_num.innerText = this.table_num[i].num;
+                td_cid.innerText = this.table_num[i].cid;
 
                 tr.append(td_id);
                 tr.append(td_num);
+                tr.append(td_cid);
                 table.append(tr);
             }
         }
@@ -90,12 +93,15 @@ let menus = new Vue({
                 img.className="imgs"
                 let describe = document.createElement("p")
                 describe.className="describes"
+                let did = document.createElement("a")
+                did.className="dids"
 
                 /*添加数据进菜单列表*/
                 name.text=s.name;
                 price.text = s.price;
                 count.value=0;
                 describe.innerText=s.describe;
+                did.innerText = s.did;
                 img.src=s.url;
 
                 /*设置控件位置*/
@@ -118,6 +124,7 @@ let menus = new Vue({
                 pay_main.append(pay_class);
                 pay_main.append(uu);
 
+                summary.append(did)
                 summary.append(name);
                 summary.append(price);
                 summary.append(count);
@@ -147,7 +154,7 @@ $("#to_pay").click(function () {
         let nn = cc.children.length;
         for(let j=0;j<nn;j++){
 
-            let aa = cc.children.item(j).children.item(0).children.item(0).children.item(2).value;
+            let aa = cc.children.item(j).children.item(0).children.item(0).children.item(3).value;
             if (aa !== "0") {
                 list.push(cc.children.item(j))
             }
@@ -170,7 +177,7 @@ function compute() {
     let ll = pay_u.getElementsByTagName("li");
     for (let i = 0; i < ll.length; i++) {
         let l = ll.item(i).children.item(0).children.item(0);
-        total_money = total_money + l.children.item(1).innerHTML * l.children.item(2).value;
+        total_money = total_money + l.children.item(2).innerHTML * l.children.item(3).value;
     }
     document.getElementById("total_money").innerText = total_money;
     /*计算总金额*/
@@ -185,7 +192,7 @@ let check_menu = new Vue({
            if (e.currentTarget.parentNode.parentNode !== aa) {
                compute();/*计算总金额*/
            }
-           if (e.currentTarget.children.item(0).children.item(0).children.item(2).value === "0" && e.currentTarget.parentNode.parentNode !== aa) {/*去掉那些突然不想要的*/
+           if (e.currentTarget.children.item(0).children.item(0).children.item(3).value === "0" && e.currentTarget.parentNode.parentNode !== aa) {/*去掉那些突然不想要的*/
                compute();/*计算总金额*/
                let ll = [];
                let ss = e.currentTarget.parentNode.previousSibling;
@@ -243,25 +250,51 @@ let select_table = new Vue({
     }
 })
 
-function end_pay() {
-    let table_number = document.getElementById('table_number').value;
-    let total_money = document.getElementById("total_money").value;
-    if (table_number !== "" && total_money !== "0") {
-        /*这里记录账单*/
-    } else {
-        alert("还没有填写桌号或还未点菜");
-    }
-}
+
 let post_menu = new Vue({
-    el:"#generate",
-    data:[],
+    el:"#pay",
+    data:{
+        message:[],
+        dish:{
+            did:"",
+            num:""
+        }
+    },
     methods:{
-        end_pay:function (){
-            let table_number = document.getElementById('table_number').value;
-            let total_money = document.getElementById("total_money").value;
-            if (table_number !== "" && total_money !== "0") {
+        end_pay:function () {
+            let table_id = $("#table_id").val()
+            let total_money = $("#total_money").val()
+            let pay_main = document.getElementById("pay_main")
+            let s = pay_main.getElementsByTagName("ul")
+            if (table_id !== "" && total_money !== "0") {
                 /*这里记录账单*/
-                let menu = document.getElementById("")
+                for(let i = 0 ; i < s.length;i++){
+                    let aa = s[i].getElementsByTagName("summary")
+                    console.log(aa.length)
+                    for(let j=0;j<aa.length;j++){
+                        console.log(aa.item(j))
+                        let id = aa.item(j).children.item(0).innerText;
+                        console.log(id);
+                        let count = aa.item(j).children.item(3).value;
+                        console.log(count);
+                        this.dish.did=id;
+                        this.dish.num = count;
+                        let s = {"did":id,"num":count}
+                        this.message.push(s)
+                    }
+                }
+                console.log(this.message)
+                let that =this
+                axios({
+                    method:"post",
+                    data:that.message,
+                    url:"http://localhost:8080/waiter/order?table_id="+table_id,
+                    headers:{
+                        'Content-Type':'application/json;charset=utf-8'
+                    }
+                }).then(function (resp){
+                    alert("点菜成功！")
+                })
             } else {
                 alert("还没有填写桌号或还未点菜");
             }
