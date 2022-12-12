@@ -42,7 +42,9 @@ let table = new Vue({
 let menus = new Vue({
     el: "#menu",
     data: {
-        menu: []
+        menu: [],
+        pre:[],
+        choose:[]
     },
     methods: {
         async get_menu() {
@@ -62,79 +64,126 @@ let menus = new Vue({
             let food = document.getElementById("food")
             food.innerHTML=""
             let pay_main = document.getElementById("pay_main")
+            let se = document.createElement("div")
+            pay_main.innerText=""
             for(let ss in this.menu){
                 let u = document.createElement("ul")
                 u.className="uls"
                 let uu = document.createElement("ul")
                 u.className="uls"
+                let su = document.createElement("ul")
                 let menu_class = document.createElement("div")
                 menu_class.innerText="-------------"+ss+"-------------";
                 let pay_class = document.createElement("div")
                 pay_class.innerText="-------------"+ss+"-------------";
+                let se_class = document.createElement("div")
+                se_class.innerText="-------------"+ss+"-------------";
                 console.log(ss)
-                let s = this.menu[ss][0]
-                /*给每一个元素都添加css叠层样式表*/
-                let l = document.createElement("li")
-                l.className="check"
-                l.onclick=check_menu.check_location;
-                let detail = document.createElement("details")
-                detail.className="details"
-                let summary = document.createElement("summary")
-                summary.className="summarys"
-                let name = document.createElement("a")
-                name.className="names"
-                let price = document.createElement("a")
-                price.className="prices"
-                let count = document.createElement("input")
-                count.className="counts"
-                count.type="number"
-                count.min="0"
-                let img = document.createElement("img")
-                img.className="imgs"
-                let describe = document.createElement("p")
-                describe.className="describes"
-                let did = document.createElement("a")
-                did.className="dids"
+                for(let x = 0 ; x < this.menu[ss].length; x ++){
+                    let s = this.menu[ss][x];
+                    /*给每一个元素都添加css叠层样式表*/
+                    let l = document.createElement("li")
+                    l.className="check"
+                    l.onclick=check_menu.check_location;
+                    let detail = document.createElement("details")
+                    detail.className="details"
+                    let summary = document.createElement("summary")
+                    summary.className="summarys"
+                    let name = document.createElement("a")
+                    name.className="names"
+                    let price = document.createElement("a")
+                    price.className="prices"
+                    let count = document.createElement("input")
+                    count.className="counts"
+                    count.type="number"
+                    count.min="0"
+                    let img = document.createElement("img")
+                    img.className="imgs"
+                    let describe = document.createElement("p")
+                    describe.className="describes"
+                    let did = document.createElement("a")
+                    did.className="dids";
 
-                /*添加数据进菜单列表*/
-                name.text=s.name;
-                price.text = s.price;
-                count.value=0;
-                describe.innerText=s.describe;
-                did.innerText = s.did;
-                img.src=s.url;
+                    /*添加数据进菜单列表*/
+                    name.text=s.name;
+                    price.text = s.price;
+                    count.value=0;
+                    describe.innerText=s.describe;
+                    did.innerText = s.did;
+                    img.src=s.url;
+                    /*设置控件位置*/
+                    l.style.listStylee="none";
+                    l.style.marginTop="20px";
+                    l.style.border="solid";
+                    l.style.textAlign="left";
+                    l.style.borderRadius="5px"
+                    l.style.marginRight="2%";
 
-                /*设置控件位置*/
-                l.style.listStylee="none";
-                l.style.marginTop="20px";
-                l.style.border="solid";
-                l.style.textAlign="left";
-                l.style.borderRadius="5px"
-                l.style.marginRight="2%";
+                    summary.style.marginLeft="1%";
+                    name.style.marginLeft="2%";
+                    price.style.marginLeft="35%";
+                    count.style.marginLeft="36%";
+                    count.style.width="50px";
+                    count.style.height="20px";
+                    img.style.width="100px";
+                    img.style.height="70px";
+                    /*确认布局关系*/
 
-                summary.style.marginLeft="1%";
-                name.style.marginLeft="2%";
-                price.style.marginLeft="35%";
-                count.style.marginLeft="36%";
-                count.style.width="50px";
-                count.style.height="20px";
-                img.style.width="100px";
-                img.style.height="70px";
-                /*确认布局关系*/
-                pay_main.append(pay_class);
-                pay_main.append(uu);
-
-                summary.append(did)
-                summary.append(name);
-                summary.append(price);
-                summary.append(count);
-                detail.append(summary);
-                detail.append(img);
-                detail.append(describe);
-                l.append(detail);
-                u.append(l)
+                    summary.append(did)
+                    summary.append(name);
+                    summary.append(price);
+                    summary.append(count);
+                    detail.append(summary);
+                    detail.append(img);
+                    detail.append(describe);
+                    l.append(detail);
+                    u.append(l)
+                }
                 food.append(menu_class)
                 food.append(u);
+                pay_main.append(pay_class);
+                pay_main.append(uu);
+                se.append(se_class);
+                se.append(su)
+            }
+            this.pre = se;
+        },
+        selectDish:function (){
+            let select = $("#select")
+            let s = document.createElement("div");
+            let pay = document.getElementById("pay_main");
+            let dish = pay.getElementsByTagName("li");
+            let food = $("#food");
+            let f = document.getElementById("food")
+            if(select.val()===""){
+                for(let i = 0 ; i < food.find("ul").length;i++){
+                    let ul = food.find("ul")[i];
+                    let sul = this.pre.children.item(i);
+                    for(let j = 0 ; j < sul.children.length; j++){
+                        ul.append(sul.children.item(j))
+                        j = j - 1;
+                    }
+                }
+            }
+            else{
+                for(let i = 0 ; i < food.find("ul").length;i++){
+                    let ul = food.find("ul")[i];
+                    let sul = this.pre.children.item(i);
+                    for(let j = 0 ; j < ul.children.length; j++){
+                        let li = ul.children.item(j)
+                        let name = li.children.item(0).children.item(0).children.item(1)
+                        /*console.log(li)*/
+                        if(name.innerText.indexOf(select.val())!==-1){
+
+                        }
+                        else{
+                            sul.append(li)
+                            j = j - 1;
+                        }
+                    }
+                }
+                console.log(s)
+                console.log(f)
             }
         }
 
@@ -184,8 +233,7 @@ function compute() {
 }
 
 let check_menu = new Vue({
-   el:".check",
-   methods: {
+    methods: {
        check_location:function (e){
            var aa = document.getElementById("food");
            console.log(e.target)
@@ -217,8 +265,10 @@ let check_menu = new Vue({
    }
 });
 let select_table = new Vue({
-    el:"#number",
-    data:[],
+    el:"#pay_food",
+    data:{
+
+    },
     methods:{
         select_table:function (e){
             let table_id = document.getElementById("table_id");
@@ -255,10 +305,6 @@ let post_menu = new Vue({
     el:"#pay",
     data:{
         message:[],
-        dish:{
-            did:"",
-            num:""
-        }
     },
     methods:{
         end_pay:function () {

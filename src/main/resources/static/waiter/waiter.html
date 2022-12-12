@@ -52,6 +52,8 @@
          style="float: right;width: 77%;border: solid;height: 100%;margin-right: 3%;border-radius: 10px;margin-top: 0">
         <img src="../more.png" style="width: 20px;height: 20px;vertical-align: text-bottom;margin-top: 2%;margin-left: 1%">
         <a>点餐系统</a>
+        <!--<input @click="get_menu" type="button" value="刷新菜单">--><!--!!!!!!!!!!!!!!!!-->
+        <!--可以手动刷新菜单,在login函数中注释掉get_menu再打开这里-->
         <br>
         <div style="border-radius: 10px;border: solid;background: antiquewhite;height: 40px;margin-left: 1%;margin-right: 0.7%;line-height: 40px">
             <a style="margin-left: 6%">菜名</a>
@@ -61,10 +63,9 @@
 
         <div id="menu"
              style="width: 98%;border: solid;height: 88.3%;margin-right: 3%;border-radius: 10px;margin-top: 0;margin-left: 1%;opacity: 100%;background: white;overflow: scroll">
-            <input @click="get_menu" type="button" value="获取菜单"><!--!!!!!!!!!!!!!!!!-->
-            <!--
-             ！
-             ！-->
+            <span>搜索栏:</span>
+            <input type="text" id="select">
+            <input @click="selectDish" type="button" value="确定" >
             <!--添加菜品，从这里导入-->
             <div id="food">
             </div>

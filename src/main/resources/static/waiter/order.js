@@ -1,5 +1,8 @@
 function login() {
     document.getElementById("pay_food").style.display = "none"
+    menus.get_menu();
+    table.get_tables();
+    /*这里可以注释掉再页面里打开手动刷新*/
 }
 
 function service() {
