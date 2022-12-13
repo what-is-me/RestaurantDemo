@@ -47,7 +47,7 @@ function out_show() {
     pay_option.style.background = "#ffffff";
     let out = document.getElementById("out_option");
     out.style.background = "#a79e9e";
-    location.href = "waiter.html";
+    location.href = "http://localhost:8080/logout";
 }
 
 

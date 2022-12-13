@@ -38,7 +38,7 @@ function out_show() {
     out.style.background = "#a79e9e";
     let swap = document.getElementById("swap_option");
     swap.style.background = "#ffffff";
-    location.href = "waiter.html";
+    location.href = "http://localhost:8080/logout";
 }
 
 
