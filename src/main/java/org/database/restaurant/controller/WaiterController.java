@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @Api(tags = "开台点菜")
@@ -53,7 +54,7 @@ public class WaiterController {
         }
         List<FullOrderLog> fols = billMapper.orderlist(cid);
         //TODO:发送邮件
-        /*new Thread(() -> {
+        new Thread(() -> {
             StringBuilder content = new StringBuilder();
             content.append("<html><body><table class='table table-hover'>");
             content.append("<thead><tr><th>菜名</th><th>份数</th></tr></thead><tbody>");
@@ -66,7 +67,7 @@ public class WaiterController {
             } catch (MessagingException e) {
                 log.error(e.getMessage());
             }
-        }).start();*/
+        }).start();
         return new ResultSet(null, cid, fols);
     }
 }
