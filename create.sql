@@ -30,7 +30,7 @@ alter table user
 #图床
 create table if not exists restaurant.picture
 (
-    `name` varchar(20) not null,
+    `name` varchar(200) not null,
     url    varchar(256) primary key
 );
 #桌子表
