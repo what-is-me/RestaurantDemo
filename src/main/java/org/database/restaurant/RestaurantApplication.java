@@ -14,7 +14,7 @@ public class RestaurantApplication {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(RestaurantApplication.class, args);
-        Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", "http://localhost:8080/swagger-ui/index.html"});//自动打开后端文档
+        Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", "http://localhost:8080/"});//自动打开后端文档
     }
 
 }

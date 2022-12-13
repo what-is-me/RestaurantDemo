@@ -6,7 +6,7 @@ server:
 default_pic_url: https://www.manpingou.com/uploads/allimg/180918/25-1P91Q1235E15.jpg
 file:
   path: E:/desktop/files/school-work/DataBase/Restaurant/files/
-chef_email: 2454787428@qq.com
+chef_email: 3113631254@qq.com
 spring:
   servlet:
     multipart:
