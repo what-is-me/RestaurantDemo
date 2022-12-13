@@ -39,7 +39,7 @@ public class DishController {
         return ret;
     }
 
-    @PreAuthorize("hasAnyAuthority('chef','admin')")
+    @PreAuthorize("hasAnyAuthority('chef','admin','senior','waiter')")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ApiOperation("插入或者更新")
     public Boolean insert(@RequestParam Long did,
@@ -59,7 +59,7 @@ public class DishController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('chef','admin')")
+    @PreAuthorize("hasAnyAuthority('chef','admin','senior','waiter')")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ApiOperation("删除")
     public Boolean delete(@RequestParam Long did) {
