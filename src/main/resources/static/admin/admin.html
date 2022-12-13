@@ -59,13 +59,16 @@
       <span>设置职位：</span>
       <br>
       <span>服务员:</span>
-      <input type="radio" name="prof" checked="checked" value="服务员">
+      <input type="radio" name="prof" checked="checked" value="waiter">
       <br>
       <span>收银员:</span>
-      <input type="radio" name="prof" value="收银员">
+      <input type="radio" name="prof" value="cashier">
       <br>
       <span>主管:</span>
-      <input type="radio" name="prof" value="主管">
+      <input type="radio" name="prof" value="senior">
+      <br>
+      <span>后厨:</span>
+      <input type="radio" name="prof" value="chef">
       <br>
       <br>
       <span>设置密码：</span>
@@ -99,9 +102,7 @@
       <span>确认密码：</span>
       <input type="password" id="code_modify1">
       <br>
-      <br>
       <span style="color: #ff4400;" id="diff_modify">{{message}}</span>
-      <br>
       <br>
       <input type="submit" value="确定" @click="modifyUser">
     </div>

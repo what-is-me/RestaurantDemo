@@ -72,6 +72,8 @@ let getPicture = new Vue({
                 data: form
             }).then(function (resp){
                 alert("上传成功！")
+            }).catch(function (error){
+                alert("您的权限可能不足或网络异常！")
             })
         }
     }

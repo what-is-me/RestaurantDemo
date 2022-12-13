@@ -80,6 +80,8 @@ let table = new Vue({
                 }
             }).then(function (resp){
                 alert("找零："+change)
+            }).catch(function (error){
+                alert("您的权限可能不足")
             })
             await this.get_tables().then();
             get_orders.getTables().then();

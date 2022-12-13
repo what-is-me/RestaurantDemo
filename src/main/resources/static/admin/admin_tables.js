@@ -8,7 +8,7 @@ let submitAccount = new Vue({
             let c1 = $('#code2')
             let c2 = $('#code1')
             let account = $('#account')/*这里的拿出来的元素实际上是一个列表，如果想更改某个元素的style就必须取下标为0时*/
-            let prof = $("input[name='prof']")
+            let prof = $("input[name='prof']:checked")
             if(c1.val()!==c2.val()){
                 const dif = $('#diff')
                 console.log(dif[0])
@@ -32,7 +32,8 @@ let submitAccount = new Vue({
                         alert("添加用户成功！")
                     }
                 }).catch(function (error){
-                    alert("添加失败!用户名可能已经存在了")
+                    console.log(error)
+                    alert("权限不足！您非管理员！")
                 })
             }
         }

@@ -1,5 +1,5 @@
 let table = new Vue({
-    el:'#set',
+    el:'#food',
     data:{
         table_num:[]
     },
@@ -44,15 +44,18 @@ let menus = new Vue({
     data: {
         menu: [],
         pre:[],
-        choose:[]
+        choose:[],
+        dish:{
+            did:"",
+            num:""
+        },
+        message:[]
     },
     methods: {
         async get_menu() {
             var that = this;
             await axios.get("http://localhost:8080/dish/").then(function (response) {
                 let obj = eval(response.data)
-                console.log(response.data);
-                console.log(obj.风味小炒[0]);
                 that.menu=obj;
             }).catch(function (error) {
                 console.log(error)
@@ -84,7 +87,7 @@ let menus = new Vue({
                     /*给每一个元素都添加css叠层样式表*/
                     let l = document.createElement("li")
                     l.className="check"
-                    l.onclick=check_menu.check_location;
+                    l.onclick=check.check_location;
                     let detail = document.createElement("details")
                     detail.className="details"
                     let summary = document.createElement("summary")
@@ -185,6 +188,44 @@ let menus = new Vue({
                 console.log(s)
                 console.log(f)
             }
+        },
+        end_pay:function (){
+            let table_id = $("#table_id").val()
+            let total_money = $("#total_money").val()
+            let pay_main = document.getElementById("pay_main")
+            let s = pay_main.getElementsByTagName("ul")
+            if (table_id !== "" && total_money !== "0") {
+                /*这里记录账单*/
+                for(let i = 0 ; i < s.length;i++){
+                    let aa = s[i].getElementsByTagName("summary")
+                    console.log(aa.length)
+                    for(let j=0;j<aa.length;j++){
+                        console.log(aa.item(j))
+                        let id = aa.item(j).children.item(0).innerText;
+                        console.log(id);
+                        let count = aa.item(j).children.item(3).value;
+                        console.log(count);
+                        this.dish.did=id;
+                        this.dish.num = count;
+                        let s = {"did":id,"num":count}
+                        this.message.push(s)
+                    }
+                }
+                console.log(this.message)
+                let that =this
+                axios({
+                    method:"post",
+                    data:that.message,
+                    url:"http://localhost:8080/waiter/order?table_id="+table_id,
+                    headers:{
+                        'Content-Type':'application/json;charset=utf-8'
+                    }
+                }).then(function (resp){
+                    alert("点菜成功！")
+                })
+            } else {
+                alert("还没有填写桌号或还未点菜");
+            }
         }
 
     }
@@ -231,119 +272,63 @@ function compute() {
     document.getElementById("total_money").innerText = total_money;
     /*计算总金额*/
 }
-
-let check_menu = new Vue({
-    methods: {
-       check_location:function (e){
-           var aa = document.getElementById("food");
-           console.log(e.target)
-           if (e.currentTarget.parentNode.parentNode !== aa) {
-               compute();/*计算总金额*/
-           }
-           if (e.currentTarget.children.item(0).children.item(0).children.item(3).value === "0" && e.currentTarget.parentNode.parentNode !== aa) {/*去掉那些突然不想要的*/
-               compute();/*计算总金额*/
-               let ll = [];
-               let ss = e.currentTarget.parentNode.previousSibling;
-               console.log(ss.textContent)
-               let food = document.getElementById("food");
-               let child = food.firstChild;
-               let last = food.lastChild;
-               while(child!==last){
-                   /*console.log(x+"----")*/
-                   if(ss.textContent===child.textContent){
-                       console.log(ss.textContent)
-                       child = child.nextSibling;
-                       child.append(e.currentTarget);
-                       break;
-                   }
-                   else{
-                       child = child.nextSibling;
-                   }
-               }
-           }
-       }
-   }
-});
-let select_table = new Vue({
-    el:"#pay_food",
-    data:{
-
-    },
+let check = new Vue({
     methods:{
-        select_table:function (e){
-            let table_id = document.getElementById("table_id");
-            console.log(table_id.value);
-            let table_count = document.getElementById("table_count");
-            console.log(table_count.value);
-            let v = e.target.value;
-            let set_table = document.getElementById("set_table");
-            let child = set_table.firstChild;
-            let last =  set_table.lastChild;
-            while(child!==last){
-                child = child.nextSibling;
-                if(child.childNodes.item(0).innerText===table_id.value){
-                    child.childNodes.item(1).innerText = table_count.value;
-                    break;
-                }
-
+        check_location(e){
+            var aa = document.getElementById("food");
+            console.log(e.currentTarget)
+            if (e.currentTarget.parentNode.parentNode !== aa) {
+                compute();/*计算总金额*/
             }
-            if(child===last){
-                if(child.childNodes.item(0).innerText===table_id.value){
-                    child.childNodes.item(1).innerText = table_count.value;
+            if (e.currentTarget.children.item(0).children.item(0).children.item(3).value === "0" && e.currentTarget.parentNode.parentNode !== aa) {/*去掉那些突然不想要的*/
+                compute();/*计算总金额*/
+                let ll = [];
+                let ss = e.currentTarget.parentNode.previousSibling;
+                console.log(ss.textContent)
+                let food = document.getElementById("food");
+                let child = food.firstChild;
+                let last = food.lastChild;
+                while(child!==last){
+                    /*console.log(x+"----")*/
+                    if(ss.textContent===child.textContent){
+                        console.log(ss.textContent)
+                        child = child.nextSibling;
+                        child.append(e.currentTarget);
+                        break;
+                    }
+                    else{
+                        child = child.nextSibling;
+                    }
                 }
-                else{
-                    alert("桌号输入有误，重新输入")
-                }
-
             }
         }
     }
 })
 
-
-let post_menu = new Vue({
-    el:"#pay",
-    data:{
-        message:[],
-    },
-    methods:{
-        end_pay:function () {
-            let table_id = $("#table_id").val()
-            let total_money = $("#total_money").val()
-            let pay_main = document.getElementById("pay_main")
-            let s = pay_main.getElementsByTagName("ul")
-            if (table_id !== "" && total_money !== "0") {
-                /*这里记录账单*/
-                for(let i = 0 ; i < s.length;i++){
-                    let aa = s[i].getElementsByTagName("summary")
-                    console.log(aa.length)
-                    for(let j=0;j<aa.length;j++){
-                        console.log(aa.item(j))
-                        let id = aa.item(j).children.item(0).innerText;
-                        console.log(id);
-                        let count = aa.item(j).children.item(3).value;
-                        console.log(count);
-                        this.dish.did=id;
-                        this.dish.num = count;
-                        let s = {"did":id,"num":count}
-                        this.message.push(s)
-                    }
-                }
-                console.log(this.message)
-                let that =this
-                axios({
-                    method:"post",
-                    data:that.message,
-                    url:"http://localhost:8080/waiter/order?table_id="+table_id,
-                    headers:{
-                        'Content-Type':'application/json;charset=utf-8'
-                    }
-                }).then(function (resp){
-                    alert("点菜成功！")
-                })
-            } else {
-                alert("还没有填写桌号或还未点菜");
-            }
+function select_table(e){
+    let table_id = document.getElementById("table_id");
+    console.log(table_id.value);
+    let table_count = document.getElementById("table_count");
+    console.log(table_count.value);
+    let v = e.target.value;
+    let set_table = document.getElementById("set_table");
+    let child = set_table.firstChild;
+    let last =  set_table.lastChild;
+    while(child!==last){
+        child = child.nextSibling;
+        if(child.childNodes.item(0).innerText===table_id.value){
+            child.childNodes.item(1).innerText = table_count.value;
+            break;
         }
+
     }
-})
+    if(child===last){
+        if(child.childNodes.item(0).innerText===table_id.value){
+            child.childNodes.item(1).innerText = table_count.value;
+        }
+        else{
+            alert("桌号输入有误，重新输入")
+        }
+
+    }
+}

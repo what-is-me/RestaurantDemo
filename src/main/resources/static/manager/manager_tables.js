@@ -146,6 +146,8 @@ let dish = new Vue({
                 }
                 that.profit = profit;
                 that.count = counts;
+            }).catch(function (error){
+                alert("您的权限可能不足！")
             })
         }
     }

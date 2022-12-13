@@ -118,8 +118,6 @@ let upload = new Vue({
                 }
             }).then(function (resp) {
                 console.log(resp.data)
-            }).catch(function (error) {
-                console.log("网络异常")
             })
         }, toJson: function () {
             //将表单转化为JSON对象
@@ -161,7 +159,7 @@ let del = new Vue({
                     alert("删除失败");
                 }
             }).catch(function (error) {
-                alert("网络异常！")
+                alert("您的权限可能不足或网络异常！")
             })
         }
     }
